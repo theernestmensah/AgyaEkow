@@ -16,8 +16,7 @@
       "dest": "server.js"
     },
     {
-      "src": "/(.*)",
-      "dest": "server.js"
+      "handle": "filesystem"
     }
   ]
 }
