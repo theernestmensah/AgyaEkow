@@ -1,17 +1,4 @@
 {
-  "functions": {
-    "api/server.js": {
-      "includeFiles": [
-        "index.html",
-        "tributes.html",
-        "admin.html",
-        "styles.css",
-        "script.js",
-        "grandpa.jpeg",
-        "robots.txt"
-      ]
-    }
-  },
   "rewrites": [
     {
       "source": "/api/:path*",
@@ -19,10 +6,6 @@
     },
     {
       "source": "/media/:path*",
-      "destination": "/api/server.js"
-    },
-    {
-      "source": "/:path*",
       "destination": "/api/server.js"
     }
   ]
