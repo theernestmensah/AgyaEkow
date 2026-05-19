@@ -597,6 +597,11 @@ async function handleApi(req, res, pathname) {
 
       const candlesCount = candleDoc.exists ? (candleDoc.data().count || 0) : 0;
 
+      let rootFiles = [];
+      let dirFiles = [];
+      try { rootFiles = fs.readdirSync(ROOT); } catch (e) { rootFiles = [e.message]; }
+      try { dirFiles = fs.readdirSync(__dirname); } catch (e) { dirFiles = [e.message]; }
+
       return sendJson(res, 200, {
         ok: true,
         tributes: tributesCount.approved,
@@ -605,7 +610,13 @@ async function handleApi(req, res, pathname) {
         pendingVideoTributes: videosCount.pending,
         photos: photosCount.approved,
         pendingPhotos: photosCount.pending,
-        candles: candlesCount
+        candles: candlesCount,
+        debug: {
+          __dirname,
+          ROOT,
+          rootFiles,
+          dirFiles
+        }
       });
     } catch (error) {
       console.error("Health check error:", error);
