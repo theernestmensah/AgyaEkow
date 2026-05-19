@@ -5,8 +5,8 @@
   "description": "Premium memorial website with a lightweight persistent backend.",
   "type": "commonjs",
   "scripts": {
-    "dev": "node server.js",
-    "start": "node server.js"
+    "dev": "node api/server.js",
+    "start": "node api/server.js"
   },
   "engines": {
     "node": ">=18"
