@@ -58,16 +58,33 @@ function initFirebaseAdmin() {
       seedFirestoreIfNeeded();
     } else {
       const projectId = process.env.FIREBASE_PROJECT_ID;
-      if (projectId) {
+      const clientEmail = process.env.FIREBASE_CLIENT_EMAIL;
+      const privateKey = process.env.FIREBASE_PRIVATE_KEY;
+
+      if (projectId && clientEmail && privateKey) {
+        // Correct escaping of newlines in private key
+        const formattedPrivateKey = privateKey.replace(/\\n/g, "\n");
+        admin.initializeApp({
+          credential: admin.credential.cert({
+            projectId,
+            clientEmail,
+            privateKey: formattedPrivateKey
+          })
+        });
+        firebaseAdminInitialized = true;
+        db = admin.firestore();
+        console.log(`Firebase Admin initialized using environment variables for Project: ${projectId}`);
+        seedFirestoreIfNeeded();
+      } else if (projectId) {
         admin.initializeApp({
           projectId: projectId
         });
         firebaseAdminInitialized = true;
         db = admin.firestore();
-        console.log(`Firebase Admin initialized with Project ID: ${projectId}`);
+        console.log(`Firebase Admin initialized with Project ID (Local/Google environment fallback): ${projectId}`);
         seedFirestoreIfNeeded();
       } else {
-        console.warn("Warning: Firebase Admin SDK was not initialized. Verify token functionality will fail. Please set GOOGLE_APPLICATION_CREDENTIALS or FIREBASE_PROJECT_ID.");
+        console.warn("Warning: Firebase Admin SDK was not initialized. Verify token functionality will fail. Please set GOOGLE_APPLICATION_CREDENTIALS, or FIREBASE_CLIENT_EMAIL/FIREBASE_PRIVATE_KEY/FIREBASE_PROJECT_ID.");
       }
     }
   } catch (error) {
@@ -234,8 +251,12 @@ const mimeTypes = {
 };
 
 function ensureUploadDirs() {
-  fs.mkdirSync(VIDEO_UPLOADS_DIR, { recursive: true });
-  fs.mkdirSync(PHOTO_UPLOADS_DIR, { recursive: true });
+  try {
+    fs.mkdirSync(VIDEO_UPLOADS_DIR, { recursive: true });
+    fs.mkdirSync(PHOTO_UPLOADS_DIR, { recursive: true });
+  } catch (err) {
+    console.warn("Warning: Could not create local upload directories (expected on read-only environments like Vercel):", err.message);
+  }
 }
 
 function sendJson(res, status, payload) {
@@ -929,6 +950,11 @@ const server = http.createServer((req, res) => {
 
 ensureUploadDirs();
 initFirebaseAdmin();
-server.listen(PORT, () => {
-  console.log(`Ekow Mensah memorial running at http://127.0.0.1:${PORT}`);
-});
+
+if (require.main === module) {
+  server.listen(PORT, () => {
+    console.log(`Ekow Mensah memorial running at http://127.0.0.1:${PORT}`);
+  });
+} else {
+  module.exports = server;
+}
