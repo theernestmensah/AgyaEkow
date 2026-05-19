@@ -1,0 +1,17 @@
+{
+  "name": "ekow-mensah-memorial",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Premium memorial website with a lightweight persistent backend.",
+  "type": "commonjs",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "firebase-admin": "^13.10.0"
+  }
+}

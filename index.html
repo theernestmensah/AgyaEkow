@@ -1,0 +1,408 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="In Loving Memory of Agya Ekow Mensah â€” a life of wisdom, devotion and enduring grace. 1951-2026.">
+  <title>In Loving Memory Â· Agya Ekow Mensah</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=tribute-card-1">
+</head>
+<body>
+
+<!-- Custom Cursor -->
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- Background Canvas for Premium Effects -->
+<canvas id="bgCanvas" class="bg-canvas"></canvas>
+
+<!-- Atmospheric layers -->
+<div class="atm-grain" aria-hidden="true"></div>
+<div class="atm-radial" aria-hidden="true"></div>
+<div class="atm-grid" aria-hidden="true"></div>
+
+<!-- ═══ NAV ═══ -->
+<nav class="site-nav" id="top">
+  <div class="nav-inner">
+    <a class="nav-logo" href="index.html">
+      <span class="logo-monogram">EM</span>
+      <div class="logo-text">
+        <span class="logo-name">Ekow Mensah</span>
+        <span class="logo-dates">1951 - 2026</span>
+      </div>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="navLinks" role="list">
+      <li><a href="index.html#about">About</a></li>
+      <li><a href="index.html#tributes">Share Tribute</a></li>
+      <li><a href="tributes.html">Tribute Wall</a></li>
+      <li><a href="index.html#video-tributes">Video</a></li>
+      <li><a href="index.html#gallery">Gallery</a></li>
+      <li><a href="index.html#service">Service</a></li>
+      <li><a href="index.html#candle" class="nav-cta">Light a candle</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+
+<!-- â•â•â• HERO â•â•â• -->
+<section class="hero" id="about">
+  <div class="hero-inner">
+
+    <div class="hero-portrait-col">
+      <div class="portrait-wrap" aria-label="Portrait of Agya Ekow Mensah">
+        <div class="p-ring r1"></div>
+        <div class="p-ring r2"></div>
+        <div class="p-ring r3"></div>
+        <span class="adinkra-float af1" aria-hidden="true">âœ¦</span>
+        <span class="adinkra-float af2" aria-hidden="true">â˜½</span>
+        <span class="adinkra-float af3" aria-hidden="true">âœ¦</span>
+        <div class="portrait-medallion">
+          <img src="grandpa.jpeg" alt="Portrait of Agya Ekow Mensah" class="medallion-photo">
+          <div class="medallion-kente" aria-hidden="true"></div>
+          <div class="medallion-glow" aria-hidden="true"></div>
+        </div>
+        <div class="portrait-caption-strip">
+          <div class="caption-bar"></div>
+          <span>Forever cherished</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-copy-col">
+      <div class="hero-content reveal">
+        <div class="hero-eyebrow-row">
+          <span class="eyebrow-dash"></span>
+          <p class="hero-eyebrow">In Loving Memory</p>
+        </div>
+        <h1 class="hero-name">
+          <span class="name-pre">Mr.</span>
+          Ekow<br><em>Mensah</em>
+        </h1>
+        <div class="life-stats">
+          <div class="stat-item">
+            <span class="stat-val">1951</span>
+            <span class="stat-key">Born</span>
+          </div>
+          <span class="stat-div" aria-hidden="true"></span>
+          <div class="stat-item">
+            <span class="stat-val">74</span>
+            <span class="stat-key">Years</span>
+          </div>
+          <span class="stat-div" aria-hidden="true"></span>
+          <div class="stat-item">
+            <span class="stat-val">Father</span>
+            <span class="stat-key">Brother Â· Leader</span>
+          </div>
+        </div>
+        <div class="hero-legacy-note">
+          <span class="legacy-rule"></span>
+          <span>A private digital memorial crafted with dignity, restraint, and enduring grace.</span>
+        </div>
+        <p class="hero-verse">
+          "He walked gently upon this earth,<br>
+          and left every soul he touched<br>
+          richer for the meeting."
+        </p>
+        <div class="hero-actions">
+          <a href="#tributes" class="btn btn-primary">
+            <svg class="btn-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+            <span>Share a tribute</span>
+          </a>
+          <a href="#candle" class="btn btn-glass">
+            <svg class="btn-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 2s5 4.5 5 10a5 5 0 0 1-10 0c0-5.5 5-10 5-10Z"/><path d="M12 13a2 2 0 0 0 2-2c0-1.5-2-4-2-4s-2 2.5-2 4a2 2 0 0 0 2 2Z"/><path d="M9 22h6"/></svg>
+            <span>Light a candle</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="hero-ledger" aria-hidden="true">
+    <span>Wisdom</span>
+    <span>Devotion</span>
+    <span>Grace</span>
+    <span>Legacy</span>
+  </div>
+  <div class="hero-scroll-hint" aria-hidden="true">
+    <span class="scroll-label">Scroll</span>
+    <span class="scroll-line"></span>
+  </div>
+</section>
+
+<!-- â•â•â• QUOTE BAND â•â•â• -->
+<section class="quote-band">
+  <div class="kente-rail kente-rail--top" aria-hidden="true">
+    <span class="kr kr-r"></span><span class="kr kr-g"></span><span class="kr kr-y"></span>
+    <span class="kr kr-r"></span><span class="kr kr-g"></span><span class="kr kr-y"></span>
+    <span class="kr kr-r"></span><span class="kr kr-g"></span><span class="kr kr-y"></span>
+    <span class="kr kr-r"></span><span class="kr kr-g"></span><span class="kr kr-y"></span>
+    <span class="kr kr-r"></span><span class="kr kr-g"></span><span class="kr kr-y"></span>
+    <span class="kr kr-r"></span><span class="kr kr-g"></span><span class="kr kr-y"></span>
+    <span class="kr kr-r"></span><span class="kr kr-g"></span><span class="kr kr-y"></span>
+    <span class="kr kr-r"></span><span class="kr kr-g"></span><span class="kr kr-y"></span>
+  </div>
+  <div class="quote-inner reveal">
+    <div class="big-quote-mark" aria-hidden="true">"</div>
+    <blockquote class="life-verse">
+      <p>A man of wisdom, devotion, and enduring grace. He raised generations with patience, led with quiet authority, and loved without condition. His name shall echo as long as we gather.</p>
+      <cite>â€” The Family of Agya Ekow Mensah</cite>
+    </blockquote>
+  </div>
+  <div class="kente-rail kente-rail--bot" aria-hidden="true">
+    <span class="kr kr-y"></span><span class="kr kr-g"></span><span class="kr kr-r"></span>
+    <span class="kr kr-y"></span><span class="kr kr-g"></span><span class="kr kr-r"></span>
+    <span class="kr kr-y"></span><span class="kr kr-g"></span><span class="kr kr-r"></span>
+    <span class="kr kr-y"></span><span class="kr kr-g"></span><span class="kr kr-r"></span>
+    <span class="kr kr-y"></span><span class="kr kr-g"></span><span class="kr kr-r"></span>
+    <span class="kr kr-y"></span><span class="kr kr-g"></span><span class="kr kr-r"></span>
+    <span class="kr kr-y"></span><span class="kr kr-g"></span><span class="kr kr-r"></span>
+    <span class="kr kr-y"></span><span class="kr kr-g"></span><span class="kr kr-r"></span>
+  </div>
+</section>
+
+<!-- â•â•â• TRIBUTES â•â•â• -->
+<section class="section tributes-section" id="tributes">
+  <div class="section-container">
+    <div class="section-header reveal">
+      <p class="section-eyebrow">Words from those who loved him</p>
+      <h2 class="section-title">Share a Tribute</h2>
+      <p class="section-lead">Share a memory, a prayer, or a word of gratitude for a life beautifully lived.</p>
+    </div>
+    <div class="tributes-layout">
+      <div class="tribute-form-wrap reveal">
+        <div class="form-card" id="tribute-form">
+          <div class="form-card-accent"></div>
+          <h3>Leave a tribute</h3>
+          <p>A word of memory, comfort, or gratitude.</p>
+          <form id="tributeForm" novalidate>
+            <div class="field-group">
+              <label for="tributeName">Your name</label>
+              <input type="text" id="tributeName" name="name" placeholder="Full name" required autocomplete="name">
+            </div>
+            <div class="field-group">
+              <label for="tributeRelation">Relationship to Agya Ekow Mensah</label>
+              <input type="text" id="tributeRelation" name="relationship" placeholder="e.g. Son, Colleague, Friend">
+            </div>
+            <div class="field-group">
+              <label for="tributeMessage">Your tribute</label>
+              <textarea id="tributeMessage" name="message" rows="5" placeholder="Write your tributeâ€¦" required></textarea>
+            </div>
+            <button class="btn btn-primary btn-full" type="submit">
+              <svg class="btn-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+              <span>Post tribute</span>
+            </button>
+            <p class="form-note" id="formNote" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </div>
+      <aside class="tribute-wall-link reveal delay-1">
+        <span class="empty-mark">EM</span>
+        <h3>Read the tribute wall</h3>
+        <p>Approved memories and messages now live on their own dedicated page.</p>
+        <a class="btn btn-glass" href="tributes.html" target="_blank" rel="noopener">
+          <svg class="btn-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
+          <span>Open tribute wall</span>
+        </a>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- â•â•â• VIDEO TRIBUTES â•â•â• -->
+<section class="section video-tributes-section" id="video-tributes">
+  <div class="section-container">
+    <div class="section-header reveal">
+      <p class="section-eyebrow">Recorded memories</p>
+      <h2 class="section-title">Video Tributes</h2>
+      <p class="section-lead">Upload a short recording for the family to keep, revisit, and share.</p>
+    </div>
+    <div class="video-tributes-layout">
+      <div class="video-form-card reveal">
+        <h3>Share a video tribute</h3>
+        <p>Recommended length: under two minutes. MP4, WebM, MOV, or M4V.</p>
+        <form id="videoTributeForm" novalidate>
+          <div class="field-group">
+            <label for="videoTributeName">Your name</label>
+            <input type="text" id="videoTributeName" name="name" placeholder="Full name" required autocomplete="name">
+          </div>
+          <div class="field-group">
+            <label for="videoTributeRelation">Relationship to Agya Ekow Mensah</label>
+            <input type="text" id="videoTributeRelation" name="relationship" placeholder="e.g. Son, Friend, Colleague">
+          </div>
+          <div class="field-group">
+            <label for="videoTributeMessage">Short note</label>
+            <textarea id="videoTributeMessage" name="message" rows="4" placeholder="Add a brief note for the family"></textarea>
+          </div>
+          <div class="field-group">
+            <label for="videoTributeFile">Video file</label>
+            <input type="file" id="videoTributeFile" name="video" accept="video/mp4,video/webm,video/quicktime,video/x-m4v" required>
+          </div>
+          <button class="btn btn-primary btn-full" type="submit">
+            <svg class="btn-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="m22 8-6 4 6 4V8Z"/><rect width="14" height="12" x="2" y="6" rx="2" ry="2"/></svg>
+            <span>Upload video</span>
+          </button>
+          <p class="form-note" id="videoFormNote" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+      <div class="video-wall reveal delay-1" id="videoTributeWall"></div>
+    </div>
+  </div>
+</section>
+
+<!-- â•â•â• GALLERY â•â•â• -->
+<section class="section gallery-section" id="gallery">
+  <div class="section-container">
+    <div class="section-header reveal">
+      <p class="section-eyebrow">Moments held close</p>
+      <h2 class="section-title">Photo Gallery</h2>
+      <p class="section-lead">A living collection of photographs â€” add your own memories below.</p>
+    </div>
+    <form class="gallery-upload-bar reveal" id="photoForm" novalidate>
+      <div class="upload-text">
+        <h3>Add a memory</h3>
+        <p>Photos are reviewed before appearing publicly.</p>
+      </div>
+      <input type="text" id="photoName" name="name" placeholder="Your name">
+      <input type="text" id="photoCaption" name="caption" placeholder="Short caption">
+      <label class="btn btn-glass" for="photoUpload">
+        <svg class="btn-icon" aria-hidden="true" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21"/></svg>
+        <span>Choose photo</span>
+      </label>
+      <input class="sr-only" id="photoUpload" name="photo" type="file" accept="image/jpeg,image/png,image/webp">
+      <button class="btn btn-primary" type="submit">
+        <svg class="btn-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8 12 3 7 8"/><path d="M12 3v12"/></svg>
+        <span>Submit photo</span>
+      </button>
+      <p class="form-note" id="photoFormNote" role="status" aria-live="polite"></p>
+    </form>
+    <div class="gallery-grid reveal delay-1" id="galleryGrid" aria-live="polite"></div>
+  </div>
+</section>
+
+<!-- â•â•â• SERVICE â•â•â• -->
+<section class="section service-section" id="service">
+  <div class="section-container">
+    <div class="section-header reveal">
+      <p class="section-eyebrow">Farewell gathering</p>
+      <h2 class="section-title">Funeral Service</h2>
+      <p class="section-lead">The family will share full arrangements shortly. This page will be updated.</p>
+    </div>
+    <div class="detail-tiles reveal">
+      <div class="detail-tile">
+        <div class="tile-icon" aria-hidden="true">
+          <svg class="lucide-icon" viewBox="0 0 24 24"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/><path d="M16 18h.01"/></svg>
+        </div>
+        <span class="tile-label">Date</span>
+        <strong>To be announced</strong>
+      </div>
+      <div class="detail-tile">
+        <div class="tile-icon" aria-hidden="true">
+          <svg class="lucide-icon" viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+        </div>
+        <span class="tile-label">Venue</span>
+        <strong>To be announced</strong>
+      </div>
+      <div class="detail-tile">
+        <div class="tile-icon" aria-hidden="true">
+          <svg class="lucide-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <span class="tile-label">Time</span>
+        <strong>To be announced</strong>
+      </div>
+      <div class="detail-tile">
+        <div class="tile-icon" aria-hidden="true">
+          <svg class="lucide-icon" viewBox="0 0 24 24"><path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47A1 1 0 0 0 3.85 10H6v10a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23Z"/></svg>
+        </div>
+        <span class="tile-label">Dress Code</span>
+        <strong>To be announced</strong>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- â•â•â• CANDLE â€” full atmospheric section â•â•â• -->
+<section class="candle-section" id="candle">
+  <div class="candle-bg-particles" aria-hidden="true">
+    <span class="cp cp1"></span>
+    <span class="cp cp2"></span>
+    <span class="cp cp3"></span>
+    <span class="cp cp4"></span>
+    <span class="cp cp5"></span>
+    <span class="cp cp6"></span>
+  </div>
+
+  <div class="candle-content reveal">
+    <p class="section-eyebrow">A quiet light</p>
+    <h2 class="candle-title" id="candleHeading">Light a candle</h2>
+    <p class="candle-lead" id="candleSubtext">Offer a gentle light in his memory. Let it burn for him.</p>
+
+    <div class="candle-scene" id="candleScene" aria-hidden="true">
+      <div class="candle-flame" id="candleFlame">
+        <div class="flame-outer"></div>
+        <div class="flame-mid"></div>
+        <div class="flame-inner"></div>
+        <div class="flame-tip"></div>
+        <div class="flame-base"></div>
+      </div>
+      <div class="wick-ember" id="wickEmber"></div>
+      <div class="candle-wick"></div>
+      <div class="candle-body">
+        <div class="candle-shine"></div>
+        <div class="candle-drip d1"></div>
+        <div class="candle-drip d2"></div>
+        <div class="candle-drip d3"></div>
+      </div>
+      <div class="candle-plate"></div>
+      <div class="candle-halo" id="candleHalo"></div>
+    </div>
+
+    <button class="btn btn-candle" id="lightCandle" type="button">
+      <svg class="btn-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 2s5 4.5 5 10a5 5 0 0 1-10 0c0-5.5 5-10 5-10Z"/><path d="M12 13a2 2 0 0 0 2-2c0-1.5-2-4-2-4s-2 2.5-2 4a2 2 0 0 0 2 2Z"/><path d="M9 22h6"/></svg>
+      <span>Light the candle</span>
+    </button>
+
+    <div class="candle-tally">
+      <span class="tally-number" id="candleCount">0</span>
+      <span class="tally-label">candles lit in his memory</span>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="footer-kente" aria-hidden="true">
+    <span class="kr kr-r"></span><span class="kr kr-g"></span><span class="kr kr-y"></span>
+    <span class="kr kr-r"></span><span class="kr kr-g"></span><span class="kr kr-y"></span>
+    <span class="kr kr-r"></span><span class="kr kr-g"></span><span class="kr kr-y"></span>
+    <span class="kr kr-r"></span><span class="kr kr-g"></span><span class="kr kr-y"></span>
+    <span class="kr kr-r"></span><span class="kr kr-g"></span><span class="kr kr-y"></span>
+    <span class="kr kr-r"></span><span class="kr kr-g"></span><span class="kr kr-y"></span>
+    <span class="kr kr-r"></span><span class="kr kr-g"></span><span class="kr kr-y"></span>
+    <span class="kr kr-r"></span><span class="kr kr-g"></span><span class="kr kr-y"></span>
+  </div>
+  <div class="footer-inner">
+    <div class="footer-adinkra" aria-hidden="true" data-speed="1.2">âœ¦</div>
+    <p class="footer-sub-top reveal">Created in loving memory of</p>
+    <p class="footer-name reveal delay-1">Agya Ekow Mensah</p>
+    <p class="footer-dates reveal delay-2">1951 - 2026</p>
+    <p class="footer-sentiment reveal delay-3">With gratitude and love</p>
+    <div class="footer-rule" aria-hidden="true"></div>
+    <p class="footer-credit">May his memory be eternal</p>
+  </div>
+</footer>
+
+<!-- Animation Libraries -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+<script type="module" src="script.js?v=video-tributes-1"></script>
+</body>
+</html>

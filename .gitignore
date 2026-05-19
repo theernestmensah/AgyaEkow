@@ -1,0 +1,25 @@
+# Dependency Directories
+node_modules/
+
+# Environment Configurations (Contains R2 and Firebase credentials)
+.env
+
+# Firebase Service Account Credentials (CRITICAL: Contains private key)
+*-firebase-adminsdk-*.json
+
+# Local Uploads Cache
+uploads/
+
+# OS/System files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor Configurations
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
