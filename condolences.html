@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Book of Condolences for Mr. Joseph Ekow Mensah (Agya Ekow). Sign the guestbook and leave your words of comfort.">
+  <title>Book of Condolences &middot; Mr. Joseph Ekow Mensah</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=tribute-card-1">
+</head>
+<body class="tribute-page">
+  <div class="cursor-dot" id="cursorDot"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+  <canvas id="bgCanvas" class="bg-canvas"></canvas>
+  <div class="atm-grain" aria-hidden="true"></div>
+  <div class="atm-radial" aria-hidden="true"></div>
+  <div class="atm-grid" aria-hidden="true"></div>
+
+  <!-- Navigation -->
+  <nav class="site-nav" id="top">
+    <div class="nav-inner">
+      <a class="nav-logo" href="index.html">
+        <span class="logo-monogram">EM</span>
+        <div class="logo-text">
+          <span class="logo-name">Ekow Mensah</span>
+          <span class="logo-dates">1951 - 2026</span>
+        </div>
+      </a>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links" id="navLinks" role="list">
+        <li><a href="index.html#about">About</a></li>
+        <li><a href="tributes.html">Tributes</a></li>
+        <li><a href="condolences.html">Condolences</a></li>
+        <li><a href="index.html#gallery">Gallery</a></li>
+        <li><a href="index.html#service">Service</a></li>
+        <li><a href="index.html#candle" class="nav-cta">Light a candle</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main>
+    <section class="section tribute-wall-page-section" style="padding-top: 8rem;">
+      <div class="section-container">
+        
+        <!-- Header -->
+        <div class="tribute-page-hero reveal">
+          <p class="section-eyebrow">Sign the Registry</p>
+          <h1 class="section-title" style="font-size: clamp(3.5rem, 9vw, 6.5rem); margin-bottom: 1.5rem;">Book of Condolences</h1>
+          <p class="section-lead" style="max-width: 680px;">Please share a message of comfort and support for the family of Mr. Joseph Ekow Mensah.</p>
+        </div>
+
+        <!-- Layout Grid -->
+        <div class="tributes-layout">
+          
+          <!-- Submission Form -->
+          <div class="form-card reveal">
+            <div class="form-card-accent"></div>
+            <h3>Sign the Book</h3>
+            <p>Leave a message and your location to sign the digital register.</p>
+            
+            <form id="condolenceForm" novalidate>
+              <div class="field-group">
+                <label for="cName">Your Full Name</label>
+                <input type="text" id="cName" name="name" required placeholder="e.g. Samuel Mensah">
+              </div>
+              
+              <div class="field-group">
+                <label for="cLocation">Location</label>
+                <input type="text" id="cLocation" name="location" placeholder="e.g. Accra, Ghana or London, UK">
+              </div>
+              
+              <div class="field-group">
+                <label for="cMessage">Message of Condolence</label>
+                <textarea id="cMessage" name="message" rows="5" required placeholder="Write your words of comfort..."></textarea>
+              </div>
+              
+              <button class="btn btn-primary btn-full" type="submit">
+                <span>Sign Condolences</span>
+              </button>
+              <p class="form-note" id="formNote" aria-live="polite"></p>
+            </form>
+          </div>
+
+          <!-- Feed Grid -->
+          <div>
+            <div class="tribute-wall" id="condolenceWall" aria-live="polite"></div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- GSAP for reveal animations -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+  <!-- Local Script Module -->
+  <script type="module">
+    const CONDOLENCES_KEY = "ekowMensahCondolences_v1";
+
+    function escapeHtml(value) {
+      return String(value || "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    const form = document.getElementById("condolenceForm");
+    const wall = document.getElementById("condolenceWall");
+    const formNote = document.getElementById("formNote");
+
+    let condolences = [];
+
+    // LocalStorage helper for immediate optimistic update
+    function getLocalCondolences() {
+      try {
+        const raw = localStorage.getItem(CONDOLENCES_KEY);
+        return raw ? JSON.parse(raw) : [];
+      } catch (_) {
+        return [];
+      }
+    }
+
+    function saveLocalCondolences(list) {
+      try {
+        localStorage.setItem(CONDOLENCES_KEY, JSON.stringify(list));
+      } catch (_) {}
+    }
+
+    function renderFeed() {
+      if (!wall) return;
+      
+      const localSubmissions = getLocalCondolences().filter(c => c.status === "pending");
+      const combined = [...localSubmissions, ...condolences];
+
+      if (!combined.length) {
+        wall.innerHTML = `
+          <div class="tribute-empty" style="width: 100%; grid-column: 1 / -1;">
+            <div class="empty-mark">EM</div>
+            <p>The Book of Condolences is open.</p>
+            <small>Be the first to sign and share your comfort.</small>
+          </div>
+        `;
+        return;
+      }
+
+      wall.innerHTML = combined.map((c, i) => {
+        const initials = c.name ? c.name.split(" ").map(n => n[0]).join("").substring(0, 2).toUpperCase() : "EM";
+        const metaLine = c.location ? `${c.location} &middot; ${c.date || "Just now"}` : `${c.date || "Just now"}`;
+        
+        return `
+          <article class="tribute-card" style="animation-delay: ${i * 0.08}s; min-height: 240px;">
+            <div class="tribute-card-top">
+              <span class="tribute-initials" aria-hidden="true">${escapeHtml(initials)}</span>
+              <span class="tribute-date">${metaLine}</span>
+            </div>
+            <blockquote style="font-size: 1.15rem; line-height: 1.6;">
+              <p>${escapeHtml(c.message)}</p>
+            </blockquote>
+            <div class="tribute-meta" style="margin-top: 1rem;">
+              <strong>${escapeHtml(c.name)}</strong>
+              ${c.status === "pending" ? `<span style="color: var(--gold-bright); font-size: 0.75rem; letter-spacing: 0.1em;">[ Pending Review ]</span>` : ""}
+            </div>
+          </article>
+        `;
+      }).join("");
+    }
+
+    async function loadFeed() {
+      condolences = getLocalCondolences().filter(c => c.status === "approved");
+      renderFeed();
+
+      try {
+        const res = await fetch("/api/condolences", { cache: "no-store" });
+        const payload = await res.json();
+        if (res.ok && payload.condolences) {
+          condolences = payload.condolences;
+          // Sync approved items to local cache
+          saveLocalCondolences(condolences);
+          renderFeed();
+        }
+      } catch (err) {
+        console.error("Load condolences feed error:", err);
+      }
+    }
+
+    form.addEventListener("submit", async event => {
+      event.preventDefault();
+      formNote.textContent = "";
+      
+      const name = form.name.value.trim();
+      const location = form.location.value.trim();
+      const message = form.message.value.trim();
+
+      if (!name || !message) {
+        formNote.style.color = "var(--kente-red)";
+        formNote.textContent = "Please fill in your Name and Message.";
+        return;
+      }
+
+      formNote.style.color = "var(--gold-bright)";
+      formNote.textContent = "Submitting to registry...";
+
+      try {
+        const res = await fetch("/api/condolences", {
+          method: "POST",
+          headers: { "Content-Type": "application/json; charset=utf-8" },
+          body: JSON.stringify({ name, location, message })
+        });
+        
+        const payload = await res.json();
+        if (!res.ok) throw new Error(payload.error || "Failed to submit.");
+
+        // Store pending submission locally so they see it instantly
+        const pendingItem = {
+          id: payload.condolence.id,
+          name,
+          location,
+          message,
+          status: "pending",
+          date: "Just now",
+          createdAt: new Date().toISOString()
+        };
+
+        const existingLocal = getLocalCondolences().filter(c => c.id !== payload.condolence.id);
+        saveLocalCondolences([pendingItem, ...existingLocal]);
+        
+        form.reset();
+        formNote.textContent = "Thank you. Your message has been submitted for review.";
+        loadFeed();
+      } catch (err) {
+        formNote.style.color = "var(--kente-red)";
+        formNote.textContent = err.message || "Could not connect to the database.";
+      }
+    });
+
+    // Particle canvas background
+    function initCanvas() {
+      const canvas = document.getElementById("bgCanvas");
+      if (!canvas) return;
+      const ctx = canvas.getContext("2d");
+      let width = window.innerWidth;
+      let height = window.innerHeight;
+      let particles = [];
+
+      function resize() {
+        width = window.innerWidth;
+        height = window.innerHeight;
+        canvas.width = width;
+        canvas.height = height;
+        initParticles();
+      }
+
+      function initParticles() {
+        particles = [];
+        const count = Math.min(Math.floor(width / 35), 45);
+        for (let i = 0; i < count; i++) {
+          particles.push({
+            x: Math.random() * width,
+            y: Math.random() * height,
+            size: Math.random() * 1.5 + 0.5,
+            speedY: -(Math.random() * 0.4 + 0.08),
+            speedX: (Math.random() - 0.5) * 0.15,
+            opacity: Math.random() * 0.35 + 0.15
+          });
+        }
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, width, height);
+        particles.forEach(p => {
+          p.y += p.speedY;
+          p.x += p.speedX;
+          if (p.y < -10) {
+            p.y = height + 10;
+            p.x = Math.random() * width;
+          }
+          if (p.x < -10 || p.x > width + 10) {
+            p.x = Math.random() * width;
+          }
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(226, 175, 101, ${p.opacity})`;
+          ctx.fill();
+        });
+        requestAnimationFrame(draw);
+      }
+
+      window.addEventListener("resize", resize);
+      resize();
+      draw();
+    }
+
+    // Toggle menu
+    const navToggle = document.getElementById("navToggle");
+    const navLinks = document.getElementById("navLinks");
+    if (navToggle && navLinks) {
+      navToggle.addEventListener("click", () => {
+        const expanded = navToggle.getAttribute("aria-expanded") === "true";
+        navToggle.setAttribute("aria-expanded", !expanded);
+        navLinks.classList.toggle("open");
+      });
+    }
+
+    // Custom mouse effects
+    const dot = document.getElementById("cursorDot");
+    const ring = document.getElementById("cursorRing");
+    if (dot && ring) {
+      document.addEventListener("mousemove", e => {
+        gsap.to(dot, { x: e.clientX, y: e.clientY, duration: 0.1 });
+        gsap.to(ring, { x: e.clientX - 10, y: e.clientY - 10, duration: 0.3 });
+      });
+      document.querySelectorAll("a, button, input, textarea, label").forEach(el => {
+        el.addEventListener("mouseenter", () => ring.classList.add("hover"));
+        el.addEventListener("mouseleave", () => ring.classList.remove("hover"));
+      });
+    }
+
+    // Run
+    initCanvas();
+    loadFeed();
+  </script>
+</body>
+</html>

@@ -335,96 +335,90 @@ tributeForm?.addEventListener("submit", async event => {
   const name = String(data.get("name") || "").trim();
   const relationship = String(data.get("relationship") || "").trim();
   const message = String(data.get("message") || "").trim();
-
-  if (!name || !message) {
-    formNote.textContent = "Please add your name and tribute.";
-    formNote.style.color = "#e07a5f";
-    return;
-  }
-
-  formNote.textContent = "Submitting your tribute for review...";
-  formNote.style.color = "var(--gold-bright)";
-
-  try {
-    if (backendAvailable()) {
-      await apiFetch("/api/tributes", {
-        method: "POST",
-        body: JSON.stringify({ name, relationship, message })
-      });
-    } else {
-      const tribute = {
-        name,
-        relationship,
-        message,
-        status: "pending",
-        date: new Date().toLocaleDateString("en", { month: "short", year: "numeric" })
-      };
-      saveLocalTributes([tribute, ...readLocalTributes()]);
-    }
-
-    tributeForm.reset();
-    formNote.textContent = "Thank you. Your tribute has been submitted for review.";
-    formNote.style.color = "var(--gold-bright)";
-  } catch (error) {
-    formNote.textContent = error.message || "We could not post that tribute just now.";
-    formNote.style.color = "#e07a5f";
-  }
-});
-
-videoTributeForm?.addEventListener("submit", async event => {
-  event.preventDefault();
-  const data = new FormData(videoTributeForm);
-  const name = String(data.get("name") || "").trim();
-  const relationship = String(data.get("relationship") || "").trim();
-  const message = String(data.get("message") || "").trim();
   const file = data.get("video");
 
-  if (!name || !(file instanceof File) || !file.size) {
-    videoFormNote.textContent = "Please add your name and choose a video.";
-    videoFormNote.style.color = "#e07a5f";
+  const hasVideo = file && file instanceof File && file.size > 0;
+
+  if (!name) {
+    formNote.textContent = "Please add your name.";
+    formNote.style.color = "#e07a5f";
     return;
   }
 
-  if (!file.type.startsWith("video/")) {
-    videoFormNote.textContent = "Please choose a valid video file.";
-    videoFormNote.style.color = "#e07a5f";
-    return;
-  }
+  if (hasVideo) {
+    if (!file.type.startsWith("video/")) {
+      formNote.textContent = "Please choose a valid video file.";
+      formNote.style.color = "#e07a5f";
+      return;
+    }
+    if (file.size > MAX_VIDEO_BYTES) {
+      formNote.textContent = "Please choose a video under 80MB.";
+      formNote.style.color = "#e07a5f";
+      return;
+    }
+    if (!backendAvailable()) {
+      formNote.textContent = "Video uploads need the backend server running.";
+      formNote.style.color = "#e07a5f";
+      return;
+    }
 
-  if (file.size > MAX_VIDEO_BYTES) {
-    videoFormNote.textContent = "Please choose a video under 80MB.";
-    videoFormNote.style.color = "#e07a5f";
-    return;
-  }
+    formNote.textContent = "Uploading your video tribute...";
+    formNote.style.color = "var(--gold-bright)";
 
-  if (!backendAvailable()) {
-    videoFormNote.textContent = "Video uploads need the backend server running.";
-    videoFormNote.style.color = "#e07a5f";
-    return;
-  }
+    try {
+      const videoData = await fileToDataUrl(file);
+      await apiFetch("/api/video-tributes", {
+        method: "POST",
+        body: JSON.stringify({
+          name,
+          relationship,
+          message,
+          fileName: file.name,
+          videoData
+        })
+      });
 
-  videoFormNote.textContent = "Uploading your video tribute...";
-  videoFormNote.style.color = "var(--gold-bright)";
+      tributeForm.reset();
+      formNote.textContent = "Thank you. Your video tribute has been submitted for review.";
+      formNote.style.color = "var(--gold-bright)";
+    } catch (error) {
+      formNote.textContent = error.message || "We could not upload that video.";
+      formNote.style.color = "#e07a5f";
+    }
+  } else {
+    if (!message) {
+      formNote.textContent = "Please add a tribute message.";
+      formNote.style.color = "#e07a5f";
+      return;
+    }
 
-  try {
-    const videoData = await fileToDataUrl(file);
-    await apiFetch("/api/video-tributes", {
-      method: "POST",
-      body: JSON.stringify({
-        name,
-        relationship,
-        message,
-        fileName: file.name,
-        videoData
-      })
-    });
+    formNote.textContent = "Submitting your tribute for review...";
+    formNote.style.color = "var(--gold-bright)";
 
-    videoTributeForm.reset();
-    videoFormNote.textContent = "Thank you. Your video tribute has been submitted for review.";
-    videoFormNote.style.color = "var(--gold-bright)";
-  } catch (error) {
-    videoFormNote.textContent = error.message || "We could not upload that video.";
-    videoFormNote.style.color = "#e07a5f";
+    try {
+      if (backendAvailable()) {
+        await apiFetch("/api/tributes", {
+          method: "POST",
+          body: JSON.stringify({ name, relationship, message })
+        });
+      } else {
+        const tribute = {
+          name,
+          relationship,
+          message,
+          status: "pending",
+          date: new Date().toLocaleDateString("en", { month: "short", year: "numeric" })
+        };
+        saveLocalTributes([tribute, ...readLocalTributes()]);
+      }
+
+      tributeForm.reset();
+      formNote.textContent = "Thank you. Your tribute has been submitted for review.";
+      formNote.style.color = "var(--gold-bright)";
+    } catch (error) {
+      formNote.textContent = error.message || "We could not post that tribute just now.";
+      formNote.style.color = "#e07a5f";
+    }
   }
 });
 

@@ -32,9 +32,8 @@
       </button>
       <ul class="nav-links" id="navLinks" role="list">
         <li><a href="index.html#about">About</a></li>
-        <li><a href="index.html#tributes">Share Tribute</a></li>
-        <li><a href="tributes.html">Tribute Wall</a></li>
-        <li><a href="index.html#video-tributes">Video</a></li>
+        <li><a href="tributes.html">Tributes</a></li>
+        <li><a href="condolences.html">Condolences</a></li>
         <li><a href="index.html#gallery">Gallery</a></li>
         <li><a href="index.html#service">Service</a></li>
         <li><a href="index.html#candle" class="nav-cta">Light a candle</a></li>
@@ -47,21 +46,46 @@
       <div class="section-container">
         <div class="tribute-page-hero reveal">
           <p class="section-eyebrow">Words from those who loved him</p>
-          <h1 class="section-title">Tribute Wall</h1>
-          <p class="section-lead">Approved memories, prayers, and words of gratitude shared in honor of Agya Ekow Mensah.</p>
-          <div class="hero-actions">
-            <a class="btn btn-primary" href="index.html#tributes">
-              <svg class="btn-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
-              <span>Share a tribute</span>
-            </a>
-            <a class="btn btn-glass" href="index.html">
-              <svg class="btn-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
-              <span>Back to memorial</span>
-            </a>
-          </div>
+          <h1 class="section-title" style="font-size: clamp(3.5rem, 9vw, 6.5rem); margin-bottom: 1.5rem;">Tribute Wall</h1>
+          <p class="section-lead" style="max-width: 680px;">Approved memories, prayers, and words of gratitude shared in honor of Mr. Joseph Ekow Mensah (Agya Ekow).</p>
         </div>
 
-        <div class="tribute-wall tribute-wall-page-grid reveal delay-1" id="tributeWall" aria-live="polite"></div>
+        <div class="tributes-layout">
+          <!-- Submission Form -->
+          <div class="form-card reveal">
+            <div class="form-card-accent"></div>
+            <h3>Leave a Tribute</h3>
+            <p>Share a memory, a prayer, or a word of gratitude.</p>
+            <form id="tributeForm" novalidate>
+              <div class="field-group">
+                <label for="tributeName">Your Name</label>
+                <input type="text" id="tributeName" name="name" required placeholder="e.g. Samuel Mensah">
+              </div>
+              <div class="field-group">
+                <label for="tributeRelation">Relationship to Mr. Joseph Ekow Mensah</label>
+                <input type="text" id="tributeRelation" name="relationship" placeholder="e.g. Son, Colleague, Friend">
+              </div>
+              <div class="field-group">
+                <label for="tributeMessage">Your Tribute</label>
+                <textarea id="tributeMessage" name="message" rows="4" placeholder="Write a memory or message of comfort..."></textarea>
+              </div>
+              <div class="field-group">
+                <label for="tributeVideo">Video Tribute (Optional)</label>
+                <input type="file" id="tributeVideo" name="video" accept="video/mp4,video/webm,video/quicktime,video/x-m4v">
+                <small style="display: block; margin-top: 0.25rem; opacity: 0.7;">Upload a short video memory (max 80MB)</small>
+              </div>
+              <button class="btn btn-primary btn-full" type="submit">
+                <span>Post Tribute</span>
+              </button>
+              <p class="form-note" id="formNote" aria-live="polite"></p>
+            </form>
+          </div>
+
+          <!-- Feed Grid -->
+          <div>
+            <div class="tribute-wall" id="tributeWall" aria-live="polite"></div>
+          </div>
+        </div>
       </div>
     </section>
   </main>
