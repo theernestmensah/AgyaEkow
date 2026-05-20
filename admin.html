@@ -320,6 +320,36 @@
       margin-bottom: 0.5rem;
     }
 
+    /* Tabs styling */
+    .queue-tabs-bar {
+      display: flex;
+      gap: 0.5rem;
+      border-bottom: 1px solid rgba(226, 175, 101, 0.1);
+      margin-bottom: 1.5rem;
+    }
+    .tab-btn {
+      background: none;
+      border: none;
+      color: var(--champagne-dim);
+      font-family: var(--ui);
+      font-size: 0.88rem;
+      font-weight: 500;
+      cursor: pointer;
+      padding: 0.6rem 1.2rem;
+      border-bottom: 2px solid transparent;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .tab-btn:hover {
+      color: var(--champagne);
+      background: rgba(244, 230, 200, 0.03);
+    }
+    .tab-btn.active {
+      color: var(--gold-glowing);
+      border-bottom-color: var(--gold-glowing);
+      font-weight: 600;
+      background: rgba(226, 175, 101, 0.05);
+    }
+
     .queue-title-row {
       display: flex;
       align-items: center;
@@ -692,6 +722,13 @@
         <p class="review-status-text" id="reviewStatus">Connecting to security network...</p>
       </div>
 
+      <!-- Tabs Bar -->
+      <div class="queue-tabs-bar">
+        <button class="tab-btn active" data-tab="pending">Pending</button>
+        <button class="tab-btn" data-tab="approved">Approved</button>
+        <button class="tab-btn" data-tab="rejected">Rejected</button>
+      </div>
+
       <section class="review-grid" id="reviewGrid"></section>
       
       <section class="review-empty" id="reviewEmpty">
@@ -808,6 +845,7 @@
     let currentUser = null;
     let auth = null;
     let provider = null;
+    let currentTab = "pending";
 
     function escapeHtml(value) {
       return String(value || "")
@@ -855,7 +893,9 @@
     }
 
     function renderQueue(items) {
-      statsPending.textContent = items.length.toString();
+      if (currentTab === "pending") {
+        statsPending.textContent = items.length.toString();
+      }
       
       if (!items.length) {
         reviewGrid.innerHTML = "";
@@ -863,30 +903,18 @@
         reviewEmpty.innerHTML = `
           <span class="empty-symbol">EM</span>
           <h3 class="empty-title">Registry Cleared</h3>
-          <p class="empty-desc">All user tributes, videos, and memory photographs have been reviewed and processed.</p>
+          <p class="empty-desc">No ${currentTab} submissions found in the database.</p>
         `;
-        reviewStatus.textContent = "No pending items.";
+        reviewStatus.textContent = `No ${currentTab} items.`;
         return;
       }
 
       reviewEmpty.hidden = true;
-      reviewStatus.textContent = `${items.length} pending review${items.length === 1 ? "" : "s"}.`;
-      reviewGrid.innerHTML = items.map(item => `
-        <article class="review-card">
-          <div class="card-body">
-            <div class="review-meta">
-              ${typeBadgeIcon(item.type)} 
-              <span>${escapeHtml(item.type)}</span>
-              <span class="meta-separator">&middot;</span>
-              <span>${escapeHtml(item.date || "Just now")}</span>
-            </div>
-            <h2>${escapeHtml(item.name || "Anonymous Submitter")}</h2>
-            ${item.relationship ? `<div class="submitter-relation">Relationship: ${escapeHtml(item.relationship)}</div>` : ""}
-            ${item.message ? `<div class="review-message">"${escapeHtml(item.message)}"</div>` : ""}
-            ${item.caption ? `<div class="review-message">Caption: "${escapeHtml(item.caption)}"</div>` : ""}
-            ${mediaHtml(item)}
-          </div>
-          <div class="review-actions">
+      reviewStatus.textContent = `${items.length} ${currentTab} item${items.length === 1 ? "" : "s"}.`;
+      reviewGrid.innerHTML = items.map(item => {
+        let actionButtons = "";
+        if (currentTab === "pending") {
+          actionButtons = `
             <button class="btn btn-approve" data-action="approved" data-type="${escapeHtml(item.type)}" data-id="${escapeHtml(item.id)}">
               <svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
               <span>Approve</span>
@@ -895,16 +923,64 @@
               <svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
               <span>Reject</span>
             </button>
-          </div>
-        </article>
-      `).join("");
+          `;
+        } else if (currentTab === "approved") {
+          actionButtons = `
+            <button class="btn btn-reject" data-action="rejected" data-type="${escapeHtml(item.type)}" data-id="${escapeHtml(item.id)}">
+              <svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+              <span>Reject & Hide</span>
+            </button>
+          `;
+        } else if (currentTab === "rejected") {
+          actionButtons = `
+            <button class="btn btn-approve" data-action="approved" data-type="${escapeHtml(item.type)}" data-id="${escapeHtml(item.id)}">
+              <svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              <span>Approve & Restore</span>
+            </button>
+          `;
+        }
+
+        return `
+          <article class="review-card">
+            <div class="card-body">
+              <div class="review-meta">
+                ${typeBadgeIcon(item.type)} 
+                <span>${escapeHtml(item.type)}</span>
+                <span class="meta-separator">&middot;</span>
+                <span>${escapeHtml(item.date || "Just now")}</span>
+              </div>
+              <h2>${escapeHtml(item.name || "Anonymous Submitter")}</h2>
+              ${item.relationship ? `<div class="submitter-relation">Relationship: ${escapeHtml(item.relationship)}</div>` : ""}
+              ${item.message ? `<div class="review-message">"${escapeHtml(item.message)}"</div>` : ""}
+              ${item.caption ? `<div class="review-message">Caption: "${escapeHtml(item.caption)}"</div>` : ""}
+              ${mediaHtml(item)}
+            </div>
+            <div class="review-actions">
+              ${actionButtons}
+            </div>
+          </article>
+        `;
+      }).join("");
     }
 
     async function loadQueue() {
       reviewStatus.textContent = "Querying live registry database...";
-      const payload = await adminFetch("/api/admin/submissions?status=pending");
+      const payload = await adminFetch(`/api/admin/submissions?status=${currentTab}`);
       renderQueue(payload.submissions || []);
     }
+
+    // Tab switching event listeners
+    const tabButtons = document.querySelectorAll(".tab-btn");
+    tabButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        tabButtons.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        currentTab = btn.getAttribute("data-tab");
+        loadQueue().catch(err => {
+          reviewStatus.textContent = err.message;
+        });
+      });
+    });
 
     googleSignIn.addEventListener("click", () => {
       if (!auth || !provider) {
