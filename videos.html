@@ -3,12 +3,19 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Approved tributes and memories for Agya Ekow Mensah.">
-  <title>Tribute Wall &middot; Agya Ekow Mensah</title>
+  <meta name="description" content="Approved video tributes and recordings for Agya Ekow Mensah.">
+  <title>Video Tributes &middot; Agya Ekow Mensah</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css?v=tribute-card-1">
+  <style>
+    /* Ensure the video grid has borders and displays elegantly */
+    .videos-grid-container {
+      border: 1px solid rgba(226, 175, 101, 0.18);
+      background: rgba(226, 175, 101, 0.1);
+    }
+  </style>
 </head>
 <body class="tribute-page">
   <div class="cursor-dot" id="cursorDot"></div>
@@ -46,18 +53,20 @@
     <section class="section tribute-wall-page-section">
       <div class="section-container">
         <div class="tribute-page-hero reveal">
-          <p class="section-eyebrow">Words from those who loved him</p>
-          <h1 class="section-title" style="font-size: clamp(3.5rem, 9vw, 6.5rem); margin-bottom: 1.5rem;">Tribute Wall</h1>
-          <p class="section-lead" style="max-width: 680px;">Approved memories, prayers, and words of gratitude shared in honor of Mr. Joseph Ekow Mensah (Agya Ekow).</p>
+          <p class="section-eyebrow">Recorded memories</p>
+          <h1 class="section-title" style="font-size: clamp(3.5rem, 9vw, 6.5rem); margin-bottom: 1.5rem;">Video Tributes</h1>
+          <p class="section-lead" style="max-width: 680px;">Short video recordings and messages shared by family and friends in memory of Agya Ekow.</p>
         </div>
 
         <div class="reveal">
-          <div class="tribute-wall tribute-wall-page-grid" id="tributeWall" aria-live="polite"></div>
+          <div class="videos-grid-container">
+            <div class="video-wall" id="videoTributeWall" aria-live="polite"></div>
+          </div>
           
           <div style="margin-top: 5rem; text-align: center;">
-            <a href="share.html?type=tribute" class="btn btn-primary">
-              <svg class="btn-icon lucide-icon" style="width:16px;height:16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4z"></path></svg>
-              <span>Write a Tribute</span>
+            <a href="share.html?type=video" class="btn btn-primary">
+              <svg class="btn-icon lucide-icon" style="width:16px;height:16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 7a2 2 0 0 0-2.45-1.45L16 7V5a2 2 0 0 0-2-2H2a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2l4.55 3.45A2 2 0 0 0 23 17V7z"/></svg>
+              <span>Upload a Video Tribute</span>
             </a>
           </div>
         </div>
@@ -67,6 +76,6 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-  <script type="module" src="script.js?v=tributes-page-1"></script>
+  <script type="module" src="script.js?v=videos-page-1"></script>
 </body>
 </html>

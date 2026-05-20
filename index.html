@@ -40,10 +40,11 @@
     <ul class="nav-links" id="navLinks" role="list">
       <li><a href="index.html#about">About</a></li>
       <li><a href="tributes.html">Tributes</a></li>
+      <li><a href="videos.html">Videos</a></li>
       <li><a href="condolences.html">Condolences</a></li>
       <li><a href="index.html#gallery">Gallery</a></li>
       <li><a href="index.html#service">Service</a></li>
-      <li><a href="index.html#candle" class="nav-cta">Light a candle</a></li>
+      <li><a href="share.html" class="nav-cta">Share a Memory</a></li>
     </ul>
   </div>
 </nav>
@@ -78,8 +79,8 @@
           <p class="hero-eyebrow">In Loving Memory</p>
         </div>
         <h1 class="hero-name" style="line-height: 1.15; font-size: clamp(3rem, 6vw, 6.2rem);">
-          <span class="name-pre" style="font-size: 0.4em; letter-spacing: 0.1em; display: block; margin-bottom: 0.5rem;">Mr. Joseph Ekow Mensah</span>
-          <em>(Agya Ekow)</em>
+          <em>Mr. Joseph Ekow Mensah</em>
+          <span class="name-pre" style="font-size: 0.4em; letter-spacing: 0.1em; display: block; margin-top: 0.5rem; text-transform: none;">(Agya Ekow)</span>
         </h1>
         <div class="life-stats">
           <div class="stat-item">
@@ -107,11 +108,11 @@
           those he encountered."
         </p>
         <div class="hero-actions">
-          <a href="#tributes" class="btn btn-primary">
+          <a href="share.html" class="btn btn-primary">
             <svg class="btn-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
-            <span>Share a tribute</span>
+            <span>Share a Memory</span>
           </a>
-          <a href="#candle" class="btn btn-glass">
+          <a href="index.html#candle" class="btn btn-glass">
             <svg class="btn-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 2s5 4.5 5 10a5 5 0 0 1-10 0c0-5.5 5-10 5-10Z"/><path d="M12 13a2 2 0 0 0 2-2c0-1.5-2-4-2-4s-2 2.5-2 4a2 2 0 0 0 2 2Z"/><path d="M9 22h6"/></svg>
             <span>Light a candle</span>
           </a>
@@ -163,66 +164,76 @@
   </div>
 </section>
 
-<!-- TRIBUTES -->
-<section class="section tributes-section" id="tributes">
+<!-- ==================== MEMORIAL REGISTRIES ==================== -->
+<section class="section directory-section" id="memorial-walls">
   <div class="section-container">
     <div class="section-header reveal">
-      <p class="section-eyebrow">Words from those who loved him</p>
-      <h2 class="section-title">Write a Tribute or leave a Video Tribute</h2>
-      <p class="section-lead">Share a memory, a prayer, or a word of gratitude for a life beautifully lived.</p>
+      <p class="section-eyebrow">Remembering Agya Ekow</p>
+      <h2 class="section-title">Memorial Registries</h2>
+      <p class="section-lead">Explore the memories shared by friends and family, or leave your own contribution.</p>
     </div>
-    <div class="tributes-layout">
-      <div class="tribute-form-wrap reveal">
-        <div class="form-card" id="tribute-form">
-          <div class="form-card-accent"></div>
-          <h3>Leave a tribute</h3>
-          <p>A word of memory, comfort, or gratitude.</p>
-          <form id="tributeForm" novalidate>
-            <div class="field-group">
-              <label for="tributeName">Your Name</label>
-              <input type="text" id="tributeName" name="name" placeholder="Full name" required autocomplete="name">
-            </div>
-            <div class="field-group">
-              <label for="tributeRelation">Relationship to Mr. Joseph Ekow Mensah</label>
-              <input type="text" id="tributeRelation" name="relationship" placeholder="e.g. Son, Colleague, Friend">
-            </div>
-            <div class="field-group">
-              <label for="tributeMessage">Your Tribute</label>
-              <textarea id="tributeMessage" name="message" rows="4" placeholder="Write a memory or message of comfort..."></textarea>
-            </div>
-            <div class="field-group">
-              <label for="tributeVideo">Video Tribute (Optional)</label>
-              <input type="file" id="tributeVideo" name="video" accept="video/mp4,video/webm,video/quicktime,video/x-m4v">
-              <small style="display: block; margin-top: 0.25rem; opacity: 0.7;">Upload a short video memory (max 80MB)</small>
-            </div>
-            <button class="btn btn-primary btn-full" type="submit">
-              <span>Post Tribute</span>
-            </button>
-            <p class="form-note" id="formNote" role="status" aria-live="polite"></p>
-          </form>
+    
+    <div class="detail-tiles reveal" style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem;">
+      <!-- Written Tributes Card -->
+      <div class="detail-tile" style="padding: 3rem 2rem; display: flex; flex-direction: column; justify-content: space-between; align-items: center; text-align: center; min-height: 380px;">
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 1rem;">
+          <div class="tile-icon" style="margin-bottom: 0.5rem;">
+            <svg class="lucide-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+          </div>
+          <span class="tile-label" style="font-size: 0.85rem; letter-spacing: 0.2em;">Written Words</span>
+          <h3 style="font-family: var(--serif); font-size: 2rem; color: var(--parchment-2); font-weight: normal; margin-bottom: 0.5rem;">Tribute Wall</h3>
+          <p style="font-size: 1.05rem; color: var(--cream-soft); line-height: 1.6; max-width: 280px;">Read memories, stories, and prayers of gratitude shared in honor of Mr. Joseph Ekow Mensah.</p>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 1rem; width: 100%; margin-top: 2rem;">
+          <a href="tributes.html" class="btn btn-primary">
+            <span>Read Tributes</span>
+          </a>
+          <a href="share.html?type=tribute" class="btn btn-glass">
+            <span>Write a Tribute</span>
+          </a>
         </div>
       </div>
-      <aside class="tribute-wall-link reveal delay-1">
-        <span class="empty-mark">EM</span>
-        <h3>Read the Tributes</h3>
-        <p>Approved memories and video messages now live on their own dedicated page.</p>
-        <a class="btn btn-glass" href="tributes.html">
-          <span>Open Tribute Wall</span>
-        </a>
-      </aside>
-    </div>
-  </div>
-</section>
 
-<!-- ═══ VIDEO TRIBUTES ═══ -->
-<section class="section video-tributes-section" id="video-tributes">
-  <div class="section-container">
-    <div class="section-header reveal">
-      <p class="section-eyebrow">Recorded memories</p>
-      <h2 class="section-title">Video Tributes</h2>
-      <p class="section-lead">Short video recordings shared by family and friends in memory of Agya Ekow.</p>
+      <!-- Video Tributes Card -->
+      <div class="detail-tile" style="padding: 3rem 2rem; display: flex; flex-direction: column; justify-content: space-between; align-items: center; text-align: center; min-height: 380px;">
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 1rem;">
+          <div class="tile-icon" style="margin-bottom: 0.5rem;">
+            <svg class="lucide-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="m22 8-6 4 6 4V8Z"/><rect width="14" height="12" x="2" y="6" rx="2" ry="2"/></svg>
+          </div>
+          <span class="tile-label" style="font-size: 0.85rem; letter-spacing: 0.2em;">Recorded Memories</span>
+          <h3 style="font-family: var(--serif); font-size: 2rem; color: var(--parchment-2); font-weight: normal; margin-bottom: 0.5rem;">Video Tributes</h3>
+          <p style="font-size: 1.05rem; color: var(--cream-soft); line-height: 1.6; max-width: 280px;">Watch short video messages, songs, and personal reflections recorded by loved ones.</p>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 1rem; width: 100%; margin-top: 2rem;">
+          <a href="videos.html" class="btn btn-primary">
+            <span>Watch Videos</span>
+          </a>
+          <a href="share.html?type=video" class="btn btn-glass">
+            <span>Upload a Video</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Condolences Card -->
+      <div class="detail-tile" style="padding: 3rem 2rem; display: flex; flex-direction: column; justify-content: space-between; align-items: center; text-align: center; min-height: 380px;">
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 1rem;">
+          <div class="tile-icon" style="margin-bottom: 0.5rem;">
+            <svg class="lucide-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10"/><path d="M6 10h10"/></svg>
+          </div>
+          <span class="tile-label" style="font-size: 0.85rem; letter-spacing: 0.2em;">Family Guestbook</span>
+          <h3 style="font-family: var(--serif); font-size: 2rem; color: var(--parchment-2); font-weight: normal; margin-bottom: 0.5rem;">Book of Condolences</h3>
+          <p style="font-size: 1.05rem; color: var(--cream-soft); line-height: 1.6; max-width: 280px;">Sign the digital registry and leave a supportive message of condolence for the family.</p>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 1rem; width: 100%; margin-top: 2rem;">
+          <a href="condolences.html" class="btn btn-primary">
+            <span>View Guestbook</span>
+          </a>
+          <a href="share.html?type=condolence" class="btn btn-glass">
+            <span>Sign the Book</span>
+          </a>
+        </div>
+      </div>
     </div>
-    <div class="video-wall reveal" id="videoTributeWall"></div>
   </div>
 </section>
 
@@ -437,7 +448,7 @@
   <div class="footer-inner">
     <div class="footer-adinkra" aria-hidden="true" data-speed="1.2">&#10022;</div>
     <p class="footer-sub-top reveal">Created in loving memory of</p>
-    <p class="footer-name reveal delay-1">Mr. Joseph Ekow Mensah<br><span style="font-size: 0.85em; font-family: var(--serif); font-style: italic; opacity: 0.85; margin-top: 0.25rem; display: block;">(Agya Ekow)</span></p>
+    <p class="footer-name reveal delay-1">Mr. Joseph Ekow Mensah<br><span style="font-size: 0.6em; font-family: var(--serif); font-style: italic; opacity: 0.85; margin-top: 0.25rem; display: block;">(Agya Ekow)</span></p>
     <p class="footer-dates reveal delay-2">1951 - 2026</p>
     <p class="footer-sentiment reveal delay-3">With gratitude and love</p>
     <div class="footer-rule" aria-hidden="true"></div>

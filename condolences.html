@@ -34,10 +34,11 @@
       <ul class="nav-links" id="navLinks" role="list">
         <li><a href="index.html#about">About</a></li>
         <li><a href="tributes.html">Tributes</a></li>
+        <li><a href="videos.html">Videos</a></li>
         <li><a href="condolences.html">Condolences</a></li>
         <li><a href="index.html#gallery">Gallery</a></li>
         <li><a href="index.html#service">Service</a></li>
-        <li><a href="index.html#candle" class="nav-cta">Light a candle</a></li>
+        <li><a href="share.html" class="nav-cta">Share a Memory</a></li>
       </ul>
     </div>
   </nav>
@@ -53,43 +54,15 @@
           <p class="section-lead" style="max-width: 680px;">Please share a message of comfort and support for the family of Mr. Joseph Ekow Mensah.</p>
         </div>
 
-        <!-- Layout Grid -->
-        <div class="tributes-layout">
+        <div class="reveal">
+          <div class="tribute-wall tribute-wall-page-grid" id="condolenceWall" aria-live="polite"></div>
           
-          <!-- Submission Form -->
-          <div class="form-card reveal">
-            <div class="form-card-accent"></div>
-            <h3>Sign the Book</h3>
-            <p>Leave a message and your location to sign the digital register.</p>
-            
-            <form id="condolenceForm" novalidate>
-              <div class="field-group">
-                <label for="cName">Your Full Name</label>
-                <input type="text" id="cName" name="name" required placeholder="e.g. Samuel Mensah">
-              </div>
-              
-              <div class="field-group">
-                <label for="cLocation">Location</label>
-                <input type="text" id="cLocation" name="location" placeholder="e.g. Accra, Ghana or London, UK">
-              </div>
-              
-              <div class="field-group">
-                <label for="cMessage">Message of Condolence</label>
-                <textarea id="cMessage" name="message" rows="5" required placeholder="Write your words of comfort..."></textarea>
-              </div>
-              
-              <button class="btn btn-primary btn-full" type="submit">
-                <span>Sign Condolences</span>
-              </button>
-              <p class="form-note" id="formNote" aria-live="polite"></p>
-            </form>
+          <div style="margin-top: 5rem; text-align: center;">
+            <a href="share.html?type=condolence" class="btn btn-primary">
+              <svg class="btn-icon lucide-icon" style="width:16px;height:16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4z"></path></svg>
+              <span>Sign the Book of Condolences</span>
+            </a>
           </div>
-
-          <!-- Feed Grid -->
-          <div>
-            <div class="tribute-wall" id="condolenceWall" aria-live="polite"></div>
-          </div>
-
         </div>
       </div>
     </section>
@@ -112,10 +85,7 @@
         .replaceAll("'", "&#039;");
     }
 
-    const form = document.getElementById("condolenceForm");
     const wall = document.getElementById("condolenceWall");
-    const formNote = document.getElementById("formNote");
-
     let condolences = [];
 
     // LocalStorage helper for immediate optimistic update
@@ -190,56 +160,6 @@
         console.error("Load condolences feed error:", err);
       }
     }
-
-    form.addEventListener("submit", async event => {
-      event.preventDefault();
-      formNote.textContent = "";
-      
-      const name = form.name.value.trim();
-      const location = form.location.value.trim();
-      const message = form.message.value.trim();
-
-      if (!name || !message) {
-        formNote.style.color = "var(--kente-red)";
-        formNote.textContent = "Please fill in your Name and Message.";
-        return;
-      }
-
-      formNote.style.color = "var(--gold-bright)";
-      formNote.textContent = "Submitting to registry...";
-
-      try {
-        const res = await fetch("/api/condolences", {
-          method: "POST",
-          headers: { "Content-Type": "application/json; charset=utf-8" },
-          body: JSON.stringify({ name, location, message })
-        });
-        
-        const payload = await res.json();
-        if (!res.ok) throw new Error(payload.error || "Failed to submit.");
-
-        // Store pending submission locally so they see it instantly
-        const pendingItem = {
-          id: payload.condolence.id,
-          name,
-          location,
-          message,
-          status: "pending",
-          date: "Just now",
-          createdAt: new Date().toISOString()
-        };
-
-        const existingLocal = getLocalCondolences().filter(c => c.id !== payload.condolence.id);
-        saveLocalCondolences([pendingItem, ...existingLocal]);
-        
-        form.reset();
-        formNote.textContent = "Thank you. Your message has been submitted for review.";
-        loadFeed();
-      } catch (err) {
-        formNote.style.color = "var(--kente-red)";
-        formNote.textContent = err.message || "Could not connect to the database.";
-      }
-    });
 
     // Particle canvas background
     function initCanvas() {

@@ -1,0 +1,564 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Share a tribute, sign the condolences book, or upload a video memory for Mr. Joseph Ekow Mensah (Agya Ekow).">
+  <title>Share a Memory &middot; Mr. Joseph Ekow Mensah</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=tribute-card-1">
+  
+  <style>
+    .share-container {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 0 3vw;
+    }
+    
+    .share-tabs-bar {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      border-bottom: 1px solid rgba(226, 175, 101, 0.1);
+      margin-bottom: 2.5rem;
+      overflow-x: auto;
+      padding-bottom: 2px;
+    }
+    
+    .share-tab-btn {
+      background: none;
+      border: none;
+      color: var(--cream-soft);
+      font-family: var(--ui);
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      padding: 0.8rem 1.6rem;
+      border-bottom: 2px solid transparent;
+      transition: all 0.3s var(--ease);
+      white-space: nowrap;
+    }
+    
+    .share-tab-btn:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.03);
+    }
+    
+    .share-tab-btn.active {
+      color: var(--gold-bright);
+      border-bottom-color: var(--gold-bright);
+      font-weight: 600;
+      background: rgba(226, 175, 101, 0.05);
+    }
+    
+    .share-form-card {
+      background: rgba(22, 16, 12, 0.6);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 24px;
+      padding: 3.5rem 3rem;
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 5rem;
+    }
+    
+    .share-form-card-accent {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, var(--kente-green), var(--gold-bright), var(--kente-red));
+    }
+    
+    .share-form-card h2 {
+      font-family: var(--serif);
+      font-size: 2.2rem;
+      color: var(--parchment-2);
+      margin-bottom: 0.5rem;
+    }
+    
+    .share-form-card > p {
+      font-size: 1.1rem;
+      color: var(--cream-soft);
+      margin-bottom: 2.5rem;
+    }
+    
+    .form-pane {
+      display: none;
+    }
+    
+    .form-pane.active {
+      display: block;
+      animation: fadeInForm 0.5s var(--ease) both;
+    }
+    
+    @keyframes fadeInForm {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body class="tribute-page">
+  <div class="cursor-dot" id="cursorDot"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+  <canvas id="bgCanvas" class="bg-canvas"></canvas>
+  <div class="atm-grain" aria-hidden="true"></div>
+  <div class="atm-radial" aria-hidden="true"></div>
+  <div class="atm-grid" aria-hidden="true"></div>
+
+  <!-- Navigation -->
+  <nav class="site-nav" id="top">
+    <div class="nav-inner">
+      <a class="nav-logo" href="index.html">
+        <span class="logo-monogram">EM</span>
+        <div class="logo-text">
+          <span class="logo-name">Ekow Mensah</span>
+          <span class="logo-dates">1951 - 2026</span>
+        </div>
+      </a>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links" id="navLinks" role="list">
+        <li><a href="index.html#about">About</a></li>
+        <li><a href="tributes.html">Tributes</a></li>
+        <li><a href="videos.html">Videos</a></li>
+        <li><a href="condolences.html">Condolences</a></li>
+        <li><a href="index.html#gallery">Gallery</a></li>
+        <li><a href="index.html#service">Service</a></li>
+        <li><a href="share.html" class="nav-cta">Share a Memory</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main>
+    <section class="section" style="padding-top: 8rem;">
+      <div class="share-container">
+        
+        <!-- Header -->
+        <div class="tribute-page-hero reveal text-center" style="margin-bottom: 2rem;">
+          <p class="section-eyebrow" style="text-align: center;">Honoring Agya Ekow</p>
+          <h1 class="section-title" style="font-size: clamp(3rem, 7vw, 5rem); text-align: center; margin-bottom: 1rem;">Share a Memory</h1>
+          <p class="section-lead" style="max-width: 600px; margin: 0 auto; text-align: center;">Select a way to share your thoughts, memories, or comfort with the family.</p>
+        </div>
+
+        <!-- Tabs Switcher -->
+        <div class="share-tabs-bar reveal">
+          <button class="share-tab-btn active" data-tab="condolence">Sign Condolences</button>
+          <button class="share-tab-btn" data-tab="tribute">Write a Tribute</button>
+          <button class="share-tab-btn" data-tab="video">Record/Upload Video</button>
+        </div>
+
+        <!-- Form Card Container -->
+        <div class="share-form-card reveal">
+          <div class="share-form-card-accent"></div>
+          
+          <!-- Tab 1: Condolence Pane -->
+          <div class="form-pane active" id="pane-condolence">
+            <h2>Sign the Book of Condolences</h2>
+            <p>Leave a message of support and your location to sign the registry.</p>
+            
+            <form id="condolenceForm" novalidate>
+              <div class="field-group">
+                <label for="cName">Your Name</label>
+                <input type="text" id="cName" name="name" required placeholder="Full Name" autocomplete="name">
+              </div>
+              <div class="field-group">
+                <label for="cLocation">Your Location</label>
+                <input type="text" id="cLocation" name="location" placeholder="e.g. Accra, Ghana or London, UK">
+              </div>
+              <div class="field-group">
+                <label for="cMessage">Message of Condolence</label>
+                <textarea id="cMessage" name="message" rows="5" required placeholder="Write your words of comfort..."></textarea>
+              </div>
+              <button class="btn btn-primary btn-full" type="submit">
+                <span>Sign Guestbook</span>
+              </button>
+              <p class="form-note" id="condolenceNote" role="status" aria-live="polite"></p>
+            </form>
+          </div>
+
+          <!-- Tab 2: Written Tribute Pane -->
+          <div class="form-pane" id="pane-tribute">
+            <h2>Write a Tribute</h2>
+            <p>Share a memory, a story, or a prayer in memory of Agya Ekow.</p>
+            
+            <form id="tributeForm" novalidate>
+              <div class="field-group">
+                <label for="tName">Your Name</label>
+                <input type="text" id="tName" name="name" required placeholder="Full Name" autocomplete="name">
+              </div>
+              <div class="field-group">
+                <label for="tRelation">Relationship to Mr. Joseph Ekow Mensah</label>
+                <input type="text" id="tRelation" name="relationship" placeholder="e.g. Daughter, Colleague, Friend">
+              </div>
+              <div class="field-group">
+                <label for="tMessage">Your Tribute Message</label>
+                <textarea id="tMessage" name="message" rows="6" required placeholder="Write a memory or message of comfort..."></textarea>
+              </div>
+              <button class="btn btn-primary btn-full" type="submit">
+                <span>Post Tribute</span>
+              </button>
+              <p class="form-note" id="tributeNote" role="status" aria-live="polite"></p>
+            </form>
+          </div>
+
+          <!-- Tab 3: Video Tribute Pane -->
+          <div class="form-pane" id="pane-video">
+            <h2>Leave a Video Tribute</h2>
+            <p>Upload a short video message or recording sharing your memories.</p>
+            
+            <form id="videoForm" novalidate>
+              <div class="field-group">
+                <label for="vName">Your Name</label>
+                <input type="text" id="vName" name="name" required placeholder="Full Name" autocomplete="name">
+              </div>
+              <div class="field-group">
+                <label for="vRelation">Relationship to Mr. Joseph Ekow Mensah</label>
+                <input type="text" id="vRelation" name="relationship" placeholder="e.g. Son, Colleague, Friend">
+              </div>
+              <div class="field-group">
+                <label for="vMessage">Short Note (Optional)</label>
+                <textarea id="vMessage" name="message" rows="3" placeholder="A short description or greeting..."></textarea>
+              </div>
+              <div class="field-group">
+                <label for="vVideo">Select Video File</label>
+                <input type="file" id="vVideo" name="video" required accept="video/mp4,video/webm,video/quicktime,video/x-m4v">
+                <small style="display: block; margin-top: 0.4rem; opacity: 0.7;">Supported formats: MP4, WebM, MOV. Max size: 80MB.</small>
+              </div>
+              <button class="btn btn-primary btn-full" type="submit">
+                <span>Upload Video</span>
+              </button>
+              <p class="form-note" id="videoNote" role="status" aria-live="polite"></p>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  
+  <script type="module">
+    const MAX_VIDEO_BYTES = 80 * 1024 * 1024;
+
+    // File to base64 DataURL helper
+    function fileToDataUrl(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = () => reject(new Error("Could not read the selected file."));
+        reader.readAsDataURL(file);
+      });
+    }
+
+    async function apiFetch(path, options) {
+      const response = await fetch(path, {
+        headers: { "Content-Type": "application/json", ...(options?.headers || {}) },
+        ...options
+      });
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(payload.error || "Request failed.");
+      return payload;
+    }
+
+    // Toggle menu
+    const navToggle = document.getElementById("navToggle");
+    const navLinks = document.getElementById("navLinks");
+    if (navToggle && navLinks) {
+      navToggle.addEventListener("click", () => {
+        const expanded = navToggle.getAttribute("aria-expanded") === "true";
+        navToggle.setAttribute("aria-expanded", !expanded);
+        navLinks.classList.toggle("open");
+      });
+    }
+
+    // Interactive Tab Switching
+    const tabButtons = document.querySelectorAll(".share-tab-btn");
+    const panes = document.querySelectorAll(".form-pane");
+
+    function switchTab(tabId) {
+      tabButtons.forEach(btn => {
+        if (btn.dataset.tab === tabId) {
+          btn.classList.add("active");
+        } else {
+          btn.classList.remove("active");
+        }
+      });
+
+      panes.forEach(pane => {
+        if (pane.id === `pane-${tabId}`) {
+          pane.classList.add("active");
+        } else {
+          pane.classList.remove("active");
+        }
+      });
+    }
+
+    tabButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        switchTab(btn.dataset.tab);
+        // Sync URL hash or search params
+        const url = new URL(window.location.href);
+        url.searchParams.set("type", btn.dataset.tab);
+        window.history.replaceState({}, "", url.toString());
+      });
+    });
+
+    // Check query params on load
+    const urlParams = new URLSearchParams(window.location.search);
+    const initialType = urlParams.get("type");
+    if (initialType && ["condolence", "tribute", "video"].includes(initialType)) {
+      switchTab(initialType);
+    }
+
+    // Custom mouse effects
+    const dot = document.getElementById("cursorDot");
+    const ring = document.getElementById("cursorRing");
+    if (dot && ring) {
+      document.addEventListener("mousemove", e => {
+        gsap.to(dot, { x: e.clientX, y: e.clientY, duration: 0.1 });
+        gsap.to(ring, { x: e.clientX - 10, y: e.clientY - 10, duration: 0.3 });
+      });
+      document.querySelectorAll("a, button, input, textarea, label").forEach(el => {
+        el.addEventListener("mouseenter", () => ring.classList.add("hover"));
+        el.addEventListener("mouseleave", () => ring.classList.remove("hover"));
+      });
+    }
+
+    // Particle canvas background
+    function initCanvas() {
+      const canvas = document.getElementById("bgCanvas");
+      if (!canvas) return;
+      const ctx = canvas.getContext("2d");
+      let width = window.innerWidth;
+      let height = window.innerHeight;
+      let particles = [];
+
+      function resize() {
+        width = window.innerWidth;
+        height = window.innerHeight;
+        canvas.width = width;
+        canvas.height = height;
+        initParticles();
+      }
+
+      function initParticles() {
+        particles = [];
+        const count = Math.min(Math.floor(width / 35), 45);
+        for (let i = 0; i < count; i++) {
+          particles.push({
+            x: Math.random() * width,
+            y: Math.random() * height,
+            size: Math.random() * 1.5 + 0.5,
+            speedY: -(Math.random() * 0.4 + 0.08),
+            speedX: (Math.random() - 0.5) * 0.15,
+            opacity: Math.random() * 0.35 + 0.15
+          });
+        }
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, width, height);
+        particles.forEach(p => {
+          p.y += p.speedY;
+          p.x += p.speedX;
+          if (p.y < -10) {
+            p.y = height + 10;
+            p.x = Math.random() * width;
+          }
+          if (p.x < -10 || p.x > width + 10) {
+            p.x = Math.random() * width;
+          }
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(226, 175, 101, ${p.opacity})`;
+          ctx.fill();
+        });
+        requestAnimationFrame(draw);
+      }
+
+      window.addEventListener("resize", resize);
+      resize();
+      draw();
+    }
+    initCanvas();
+
+    // GSAP Reveal Animations
+    if (typeof gsap !== "undefined") {
+      document.querySelectorAll(".reveal").forEach(el => {
+        gsap.fromTo(el, { opacity: 0, y: 55 }, {
+          opacity: 1,
+          y: 0,
+          duration: 1.2,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: el,
+            start: "top 85%",
+            toggleActions: "play none none none"
+          }
+        });
+      });
+    }
+
+    // FORM 1: Condolences Submission
+    const condolenceForm = document.getElementById("condolenceForm");
+    const condolenceNote = document.getElementById("condolenceNote");
+    condolenceForm.addEventListener("submit", async event => {
+      event.preventDefault();
+      condolenceNote.textContent = "";
+
+      const name = condolenceForm.name.value.trim();
+      const location = condolenceForm.location.value.trim();
+      const message = condolenceForm.message.value.trim();
+
+      if (!name || !message) {
+        condolenceNote.style.color = "#e07a5f";
+        condolenceNote.textContent = "Please add your Name and Message.";
+        return;
+      }
+
+      condolenceNote.style.color = "var(--gold-bright)";
+      condolenceNote.textContent = "Signing guestbook...";
+
+      try {
+        await apiFetch("/api/condolences", {
+          method: "POST",
+          body: JSON.stringify({ name, location, message })
+        });
+        
+        // Optimistic Save to LocalStorage so they see their sign instantly
+        const pendingItem = {
+          name,
+          location,
+          message,
+          status: "pending",
+          date: "Just now",
+          createdAt: new Date().toISOString()
+        };
+        try {
+          const raw = localStorage.getItem("ekowMensahCondolences_v1");
+          const list = raw ? JSON.parse(raw) : [];
+          localStorage.setItem("ekowMensahCondolences_v1", JSON.stringify([pendingItem, ...list]));
+        } catch (_) {}
+
+        condolenceForm.reset();
+        condolenceNote.textContent = "Thank you. Your message of condolence has been submitted for review.";
+      } catch (error) {
+        condolenceNote.style.color = "#e07a5f";
+        condolenceNote.textContent = error.message || "Failed to submit.";
+      }
+    });
+
+    // FORM 2: Written Tribute Submission
+    const tributeForm = document.getElementById("tributeForm");
+    const tributeNote = document.getElementById("tributeNote");
+    tributeForm.addEventListener("submit", async event => {
+      event.preventDefault();
+      tributeNote.textContent = "";
+
+      const name = tributeForm.name.value.trim();
+      const relationship = tributeForm.relationship.value.trim();
+      const message = tributeForm.message.value.trim();
+
+      if (!name || !message) {
+        tributeNote.style.color = "#e07a5f";
+        tributeNote.textContent = "Please add your Name and Tribute.";
+        return;
+      }
+
+      tributeNote.style.color = "var(--gold-bright)";
+      tributeNote.textContent = "Submitting tribute...";
+
+      try {
+        await apiFetch("/api/tributes", {
+          method: "POST",
+          body: JSON.stringify({ name, relationship, message })
+        });
+
+        // Optimistic Save to LocalStorage
+        const pendingItem = {
+          name,
+          relationship,
+          message,
+          status: "pending",
+          date: new Date().toLocaleDateString("en", { month: "short", year: "numeric" }),
+          createdAt: new Date().toISOString()
+        };
+        try {
+          const raw = localStorage.getItem("ekowMensahTributes_v5_clear");
+          const list = raw ? JSON.parse(raw) : [];
+          localStorage.setItem("ekowMensahTributes_v5_clear", JSON.stringify([pendingItem, ...list]));
+        } catch (_) {}
+
+        tributeForm.reset();
+        tributeNote.textContent = "Thank you. Your tribute has been submitted for review.";
+      } catch (error) {
+        tributeNote.style.color = "#e07a5f";
+        tributeNote.textContent = error.message || "Failed to submit.";
+      }
+    });
+
+    // FORM 3: Video Tribute Submission
+    const videoForm = document.getElementById("videoForm");
+    const videoNote = document.getElementById("videoNote");
+    videoForm.addEventListener("submit", async event => {
+      event.preventDefault();
+      videoNote.textContent = "";
+
+      const name = videoForm.name.value.trim();
+      const relationship = videoForm.relationship.value.trim();
+      const message = videoForm.message.value.trim();
+      const file = videoForm.video.files[0];
+
+      if (!name || !file) {
+        videoNote.style.color = "#e07a5f";
+        videoNote.textContent = "Please add your Name and select a Video file.";
+        return;
+      }
+
+      if (!file.type.startsWith("video/")) {
+        videoNote.style.color = "#e07a5f";
+        videoNote.textContent = "Please choose a valid video file.";
+        return;
+      }
+
+      if (file.size > MAX_VIDEO_BYTES) {
+        videoNote.style.color = "#e07a5f";
+        videoNote.textContent = "Please choose a video file under 80MB.";
+        return;
+      }
+
+      videoNote.style.color = "var(--gold-bright)";
+      videoNote.textContent = "Reading & uploading your video tribute (this may take a moment)...";
+
+      try {
+        const videoData = await fileToDataUrl(file);
+        await apiFetch("/api/video-tributes", {
+          method: "POST",
+          body: JSON.stringify({
+            name,
+            relationship,
+            message,
+            fileName: file.name,
+            videoData
+          })
+        });
+
+        videoForm.reset();
+        videoNote.textContent = "Thank you. Your video tribute has been submitted for review.";
+      } catch (error) {
+        videoNote.style.color = "#e07a5f";
+        videoNote.textContent = error.message || "Failed to upload video.";
+      }
+    });
+  </script>
+</body>
+</html>

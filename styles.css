@@ -1661,11 +1661,11 @@ body {
 }
 
 .hero-portrait-col {
-  order: 2;
+  order: 1;
 }
 
 .hero-copy-col {
-  order: 1;
+  order: 2;
 }
 
 .portrait-wrap {
