@@ -326,6 +326,25 @@
     // Run
     initCanvas();
     loadFeed();
+
+    // Reveal animations
+    if (typeof gsap !== "undefined") {
+      document.querySelectorAll(".reveal").forEach(el => {
+        gsap.fromTo(el, { opacity: 0, y: 50 }, {
+          opacity: 1,
+          y: 0,
+          duration: 1.2,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: el,
+            start: "top 85%",
+            toggleActions: "play none none none"
+          }
+        });
+      });
+    } else {
+      document.querySelectorAll(".reveal").forEach(el => el.classList.add("visible"));
+    }
   </script>
 </body>
 </html>
