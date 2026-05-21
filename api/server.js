@@ -6,7 +6,9 @@ const admin = require("firebase-admin");
 
 // Load local .env configuration synchronously if present
 try {
-  const envPath = path.join(__dirname, ".env");
+  const envPath = fs.existsSync(path.join(__dirname, ".env"))
+    ? path.join(__dirname, ".env")
+    : path.join(__dirname, "..", ".env");
   if (fs.existsSync(envPath)) {
     const lines = fs.readFileSync(envPath, "utf-8").split(/\r?\n/);
     for (const line of lines) {
@@ -137,46 +139,13 @@ const R2_SECRET_ACCESS_KEY = process.env.R2_SECRET_ACCESS_KEY || "";
 const R2_PUBLIC_BASE_URL = String(process.env.R2_PUBLIC_BASE_URL || "").replace(/\/$/, "");
 const R2_ENDPOINT = R2_ACCOUNT_ID ? `https://${R2_ACCOUNT_ID}.r2.cloudflarestorage.com` : "";
 
-const seedTributes = [
-  {
-    id: "seed-ama",
-    name: "Ama Mensah",
-    relationship: "Daughter",
-    message: "Your wisdom was calm, steady, and full of love. We will carry your lessons in every room we enter. The world is quieter without you, but your voice still guides us.",
-    date: "May 2026",
-    createdAt: "2026-05-01T00:00:00.000Z"
-  },
-  {
-    id: "seed-kwame",
-    name: "Kwame Boateng",
-    relationship: "Family friend",
-    message: "Mr. Joseph Ekow Mensah had a way of making people feel seen. His kindness remains a blessing to all of us. I count myself lucky to have known him.",
-    date: "May 2026",
-    createdAt: "2026-05-02T00:00:00.000Z"
-  },
-  {
-    id: "seed-esi",
-    name: "Esi Armah",
-    relationship: "Niece",
-    message: "A gentle voice, a generous heart, and a legacy that will keep speaking through the lives he touched. Uncle, you made us believe the best of ourselves.",
-    date: "May 2026",
-    createdAt: "2026-05-03T00:00:00.000Z"
-  },
-  {
-    id: "seed-kofi",
-    name: "Kofi Annan-Boadu",
-    relationship: "Colleague",
-    message: "Forty years we worked side by side. He never once raised his voice and never once failed to give his best. The office will never feel the same.",
-    date: "May 2026",
-    createdAt: "2026-05-04T00:00:00.000Z"
-  }
-];
+const seedTributes = [];
 
 async function seedFirestoreIfNeeded() {
   try {
     const tributesRef = db.collection("tributes");
     const snapshot = await tributesRef.limit(1).get();
-    if (snapshot.empty) {
+    if (snapshot.empty && seedTributes.length > 0) {
       console.log("Seeding Firestore with default tributes...");
       const batch = db.batch();
       for (const t of seedTributes) {

@@ -1,19 +1,13 @@
-const TRIBUTE_KEY = "ekowMensahTributes_v5_clear";
-const VIDEO_TRIBUTE_KEY = "ekowMensahVideoTributes_v1";
-const PHOTO_KEY = "ekowMensahPhotos_v1";
-const CANDLE_KEY = "ekowMensahCandles_v4";
-const CANDLE_LIT_KEY = "ekowMensahCandleLit_v4";
+const TRIBUTE_KEY = "ekowMensahTributes_v6";
+const VIDEO_TRIBUTE_KEY = "ekowMensahVideoTributes_v2";
+const PHOTO_KEY = "ekowMensahPhotos_v2";
+const CANDLE_LIT_KEY = "ekowMensahCandleLit_v5";
 const MAX_VIDEO_BYTES = 80 * 1024 * 1024;
 const MAX_PHOTO_BYTES = 8 * 1024 * 1024;
 
 const sampleTributes = [];
 
-const galleryData = [
-  { label: "A life beautifully lived" },
-  { label: "Family moments" },
-  { label: "Grace and remembrance" },
-  { label: "Forever in our hearts" }
-];
+const galleryData = [];
 
 const state = {
   firebaseOnline: false,
@@ -114,13 +108,7 @@ async function apiFetch(path, options) {
   return payload;
 }
 
-function readLocalCandles() {
-  return Number(localStorage.getItem(CANDLE_KEY)) || 0;
-}
 
-function saveLocalCandles(count) {
-  localStorage.setItem(CANDLE_KEY, String(count));
-}
 
 function isCandleLit() {
   return localStorage.getItem(CANDLE_LIT_KEY) === "true";
@@ -315,16 +303,12 @@ async function loadPhotos() {
 }
 
 async function loadCandles() {
-  state.candles = readLocalCandles();
-  updateCandleCount(state.candles);
-
   if (!backendAvailable()) return;
 
   try {
     const payload = await apiFetch("/api/candles");
     if (payload && payload.count !== undefined) {
       updateCandleCount(payload.count);
-      saveLocalCandles(payload.count);
     }
   } catch (_) {}
 }
@@ -493,24 +477,17 @@ photoForm?.addEventListener("submit", async event => {
 
 lightCandle?.addEventListener("click", async () => {
   if (isCandleLit()) return;
-  setCandleLit(true);
-  applyLitState(true);
+  if (!backendAvailable()) return;
 
   try {
-    if (backendAvailable()) {
-      const payload = await apiFetch("/api/candles", { method: "POST" });
-      updateCandleCount(payload.count);
-    } else {
-      const nextCount = readLocalCandles() + 1;
-      saveLocalCandles(nextCount);
-      updateCandleCount(nextCount);
-    }
-  } catch (_) {
-    const nextCount = state.candles + 1;
-    updateCandleCount(nextCount);
+    const payload = await apiFetch("/api/candles", { method: "POST" });
+    updateCandleCount(payload.count);
+    setCandleLit(true);
+    applyLitState(true);
+    sparkCandle();
+  } catch (error) {
+    console.error("Failed to light candle on server:", error);
   }
-
-  sparkCandle();
 });
 
 navToggle?.addEventListener("click", () => {

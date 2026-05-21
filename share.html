@@ -480,9 +480,9 @@
           createdAt: new Date().toISOString()
         };
         try {
-          const raw = localStorage.getItem("ekowMensahCondolences_v1");
+          const raw = localStorage.getItem("ekowMensahCondolences_v2");
           const list = raw ? JSON.parse(raw) : [];
-          localStorage.setItem("ekowMensahCondolences_v1", JSON.stringify([pendingItem, ...list]));
+          localStorage.setItem("ekowMensahCondolences_v2", JSON.stringify([pendingItem, ...list]));
         } catch (_) {}
 
         condolenceForm.reset();
@@ -529,9 +529,9 @@
           createdAt: new Date().toISOString()
         };
         try {
-          const raw = localStorage.getItem("ekowMensahTributes_v5_clear");
+          const raw = localStorage.getItem("ekowMensahTributes_v6");
           const list = raw ? JSON.parse(raw) : [];
-          localStorage.setItem("ekowMensahTributes_v5_clear", JSON.stringify([pendingItem, ...list]));
+          localStorage.setItem("ekowMensahTributes_v6", JSON.stringify([pendingItem, ...list]));
         } catch (_) {}
 
         tributeForm.reset();
