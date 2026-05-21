@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Share a tribute, sign the condolences book, or upload a video memory for Mr. Joseph Ekow Mensah (Agya Ekow).">
+  <meta name="description" content="Share a tribute, sign the condolences book, or upload a video memory for Mr. Joseph Ekow Mensah.">
   <title>Share a Memory &middot; Mr. Joseph Ekow Mensah</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -117,7 +117,7 @@
       <a class="nav-logo" href="index.html">
         <span class="logo-monogram">EM</span>
         <div class="logo-text">
-          <span class="logo-name">Ekow Mensah</span>
+          <span class="logo-name">Joseph Ekow Mensah</span>
           <span class="logo-dates">1951 - 2026</span>
         </div>
       </a>
@@ -125,13 +125,20 @@
         <span></span><span></span><span></span>
       </button>
       <ul class="nav-links" id="navLinks" role="list">
-        <li><a href="index.html#about">About</a></li>
-        <li><a href="tributes.html">Tributes</a></li>
-        <li><a href="videos.html">Videos</a></li>
-        <li><a href="condolences.html">Condolences</a></li>
+        <li class="nav-dropdown-wrapper">
+          <button class="nav-dropdown-toggle" type="button" aria-expanded="false">
+            <span>Tributes</span>
+            <svg class="dropdown-caret" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+          <ul class="nav-dropdown-menu">
+            <li><a href="tributes.html">Written Tributes</a></li>
+            <li><a href="videos.html">Video Tributes</a></li>
+            <li><a href="condolences.html">Book of Condolences</a></li>
+          </ul>
+        </li>
         <li><a href="index.html#gallery">Gallery</a></li>
         <li><a href="index.html#service">Service</a></li>
-        <li><a href="share.html" class="nav-cta">Share a Memory</a></li>
+        <li><a href="index.html#candle" class="nav-cta">Light a Candle</a></li>
       </ul>
     </div>
   </nav>
@@ -142,7 +149,7 @@
         
         <!-- Header -->
         <div class="tribute-page-hero reveal text-center" style="margin-bottom: 2rem;">
-          <p class="section-eyebrow" style="text-align: center;">Honoring Agya Ekow</p>
+          <p class="section-eyebrow" style="text-align: center;">Honoring Mr. Joseph Ekow Mensah</p>
           <h1 class="section-title" style="font-size: clamp(3rem, 7vw, 5rem); text-align: center; margin-bottom: 1rem;">Share a Memory</h1>
           <p class="section-lead" style="max-width: 600px; margin: 0 auto; text-align: center;">Select a way to share your thoughts, memories, or comfort with the family.</p>
         </div>
@@ -186,7 +193,7 @@
           <!-- Tab 2: Written Tribute Pane -->
           <div class="form-pane" id="pane-tribute">
             <h2>Write a Tribute</h2>
-            <p>Share a memory, a story, or a prayer in memory of Agya Ekow.</p>
+            <p>Share a memory, a story, or a prayer in memory of Mr. Joseph Ekow Mensah.</p>
             
             <form id="tributeForm" novalidate>
               <div class="field-group">
@@ -277,6 +284,35 @@
         const expanded = navToggle.getAttribute("aria-expanded") === "true";
         navToggle.setAttribute("aria-expanded", !expanded);
         navLinks.classList.toggle("open");
+      });
+
+      navLinks.querySelectorAll("a").forEach(link => {
+        link.addEventListener("click", () => {
+          navLinks.classList.remove("open");
+          navToggle.setAttribute("aria-expanded", "false");
+          document.querySelector(".nav-dropdown-wrapper")?.classList.remove("open");
+          document.querySelector(".nav-dropdown-toggle")?.setAttribute("aria-expanded", "false");
+        });
+      });
+    }
+
+    // Dropdown toggle logic
+    const dropdownToggle = document.querySelector(".nav-dropdown-toggle");
+    const dropdownWrapper = document.querySelector(".nav-dropdown-wrapper");
+
+    if (dropdownToggle && dropdownWrapper) {
+      dropdownToggle.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const isOpen = dropdownWrapper.classList.toggle("open");
+        dropdownToggle.setAttribute("aria-expanded", String(isOpen));
+      });
+
+      document.addEventListener("click", (e) => {
+        if (!dropdownWrapper.contains(e.target)) {
+          dropdownWrapper.classList.remove("open");
+          dropdownToggle.setAttribute("aria-expanded", "false");
+        }
       });
     }
 

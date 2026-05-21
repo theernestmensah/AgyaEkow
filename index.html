@@ -38,13 +38,19 @@
       <span></span><span></span><span></span>
     </button>
     <ul class="nav-links" id="navLinks" role="list">
-      <li><a href="index.html#about">About</a></li>
-      <li><a href="tributes.html">Tributes</a></li>
-      <li><a href="videos.html">Videos</a></li>
-      <li><a href="condolences.html">Condolences</a></li>
+      <li class="nav-dropdown-wrapper">
+        <button class="nav-dropdown-toggle" type="button" aria-expanded="false">
+          <span>Tributes</span>
+          <svg class="dropdown-caret" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </button>
+        <ul class="nav-dropdown-menu">
+          <li><a href="tributes.html">Written Tributes</a></li>
+          <li><a href="videos.html">Video Tributes</a></li>
+          <li><a href="condolences.html">Book of Condolences</a></li>
+        </ul>
+      </li>
       <li><a href="index.html#gallery">Gallery</a></li>
       <li><a href="index.html#service">Service</a></li>
-      <li><a href="share.html">Share a Memory</a></li>
       <li><a href="#candle" class="nav-cta">Light a Candle</a></li>
     </ul>
   </div>

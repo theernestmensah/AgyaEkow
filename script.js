@@ -522,8 +522,30 @@ navLinks?.querySelectorAll("a").forEach(link => {
   link.addEventListener("click", () => {
     navLinks.classList.remove("open");
     navToggle?.setAttribute("aria-expanded", "false");
+    document.querySelector(".nav-dropdown-wrapper")?.classList.remove("open");
+    document.querySelector(".nav-dropdown-toggle")?.setAttribute("aria-expanded", "false");
   });
 });
+
+// Dropdown toggle logic
+const dropdownToggle = document.querySelector(".nav-dropdown-toggle");
+const dropdownWrapper = document.querySelector(".nav-dropdown-wrapper");
+
+if (dropdownToggle && dropdownWrapper) {
+  dropdownToggle.addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const isOpen = dropdownWrapper.classList.toggle("open");
+    dropdownToggle.setAttribute("aria-expanded", String(isOpen));
+  });
+
+  document.addEventListener("click", (e) => {
+    if (!dropdownWrapper.contains(e.target)) {
+      dropdownWrapper.classList.remove("open");
+      dropdownToggle.setAttribute("aria-expanded", "false");
+    }
+  });
+}
 
 const nav = document.querySelector(".site-nav");
 window.addEventListener("scroll", () => {
