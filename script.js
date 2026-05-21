@@ -2,6 +2,7 @@ const TRIBUTE_KEY = "ekowMensahTributes_v6";
 const VIDEO_TRIBUTE_KEY = "ekowMensahVideoTributes_v2";
 const PHOTO_KEY = "ekowMensahPhotos_v2";
 const CANDLE_LIT_KEY = "ekowMensahCandleLit_v5";
+const LOCAL_CANDLE_COUNT_KEY = "ekowMensahLocalCandleCount_v1";
 const MAX_VIDEO_BYTES = 80 * 1024 * 1024;
 const MAX_PHOTO_BYTES = 8 * 1024 * 1024;
 
@@ -303,7 +304,17 @@ async function loadPhotos() {
 }
 
 async function loadCandles() {
-  if (!backendAvailable()) return;
+  if (!backendAvailable()) {
+    let localCount = localStorage.getItem(LOCAL_CANDLE_COUNT_KEY);
+    if (localCount === null) {
+      localCount = 8;
+      localStorage.setItem(LOCAL_CANDLE_COUNT_KEY, String(localCount));
+    } else {
+      localCount = Number(localCount) || 8;
+    }
+    updateCandleCount(localCount);
+    return;
+  }
 
   try {
     const payload = await apiFetch("/api/candles");
@@ -477,7 +488,21 @@ photoForm?.addEventListener("submit", async event => {
 
 lightCandle?.addEventListener("click", async () => {
   if (isCandleLit()) return;
-  if (!backendAvailable()) return;
+  if (!backendAvailable()) {
+    let localCount = localStorage.getItem(LOCAL_CANDLE_COUNT_KEY);
+    if (localCount === null) {
+      localCount = 8;
+    } else {
+      localCount = Number(localCount) || 8;
+    }
+    localCount += 1;
+    localStorage.setItem(LOCAL_CANDLE_COUNT_KEY, String(localCount));
+    updateCandleCount(localCount);
+    setCandleLit(true);
+    applyLitState(true);
+    sparkCandle();
+    return;
+  }
 
   try {
     const payload = await apiFetch("/api/candles", { method: "POST" });

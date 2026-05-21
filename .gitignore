@@ -23,3 +23,13 @@ desktop.ini
 *.njsproj
 *.sln
 *.sw?
+
+# Log files
+*.log
+
+# CSV exports / data logs
+*.csv
+
+# Temporary or raw media assets
+WhatsApp Image 2026-05-18 at 11.47.52.jpeg
+

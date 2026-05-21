@@ -752,10 +752,22 @@
       signOut as firebaseSignOut
     } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
 
-    const allowedAdmins = new Set([
+    let allowedAdmins = new Set([
       "eanmensah@gmail.com",
       "uriahmensah@gmail.com"
     ]);
+
+    async function loadFirebaseConfig() {
+      const response = await fetch("/api/config", { cache: "no-store" });
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok || !payload.firebase) {
+        throw new Error(payload.error || "Firebase configuration not loaded.");
+      }
+      if (payload.adminEmails) {
+        allowedAdmins = new Set(payload.adminEmails.map(email => email.toLowerCase()));
+      }
+      return payload.firebase;
+    }
 
     // Live Clock Integration
     function updateClock() {
@@ -823,14 +835,7 @@
       draw();
     }
 
-    async function loadFirebaseConfig() {
-      const response = await fetch("/api/config", { cache: "no-store" });
-      const payload = await response.json().catch(() => ({}));
-      if (!response.ok || !payload.firebase) {
-        throw new Error(payload.error || "Firebase configuration not loaded.");
-      }
-      return payload.firebase;
-    }
+
 
     const googleSignIn = document.getElementById("googleSignIn");
     const signOutButton = document.getElementById("signOut");
@@ -1071,21 +1076,42 @@
       });
     }
 
-    try {
-      const firebaseConfig = await loadFirebaseConfig();
-      const app = initializeApp(firebaseConfig);
-      auth = getAuth(app);
-      provider = new GoogleAuthProvider();
-      watchAuthState();
-    } catch (error) {
+    if (window.location.protocol === "file:") {
       googleSignIn.disabled = true;
-      adminChip.textContent = "Operational Error";
-      reviewStatus.textContent = error.message;
+      adminChip.textContent = "Offline Mode";
+      reviewStatus.textContent = "Local preview active.";
       reviewEmpty.innerHTML = `
-        <span class="empty-symbol" style="color: var(--ruby-accent);">⚠</span>
-        <h3 class="empty-title">Config Error</h3>
-        <p class="empty-desc">The authentication server environment variables are not correctly configured on the server. Please verify settings.</p>
+        <span class="empty-symbol" style="color: var(--gold-glowing);">⚠</span>
+        <h3 class="empty-title">Local Preview Mode</h3>
+        <p class="empty-desc" style="max-width: 500px; line-height: 1.6; margin: 0 auto;">
+          You are viewing this console directly from your filesystem (<code>file://</code>).
+          <br><br>
+          To access the secure moderator dashboard, you must run the local server.
+          Please run:
+          <br><br>
+          <code style="background: rgba(255,255,255,0.08); padding: 0.5rem 1rem; border: 1px solid var(--gold-border); display: inline-block;">npm run dev</code>
+          <br><br>
+          And navigate to:<br>
+          <a href="http://localhost:4173/admin.html" style="color: var(--gold-glowing); font-weight: bold; text-decoration: underline;">http://localhost:4173/admin.html</a>
+        </p>
       `;
+    } else {
+      try {
+        const firebaseConfig = await loadFirebaseConfig();
+        const app = initializeApp(firebaseConfig);
+        auth = getAuth(app);
+        provider = new GoogleAuthProvider();
+        watchAuthState();
+      } catch (error) {
+        googleSignIn.disabled = true;
+        adminChip.textContent = "Operational Error";
+        reviewStatus.textContent = error.message;
+        reviewEmpty.innerHTML = `
+          <span class="empty-symbol" style="color: var(--ruby-accent);">⚠</span>
+          <h3 class="empty-title">Config Error</h3>
+          <p class="empty-desc">The authentication server environment variables are not correctly configured on the server. Please verify settings.</p>
+        `;
+      }
     }
   </script>
 </body>

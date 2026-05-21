@@ -562,7 +562,10 @@ async function handleApi(req, res, pathname) {
     if (!configured) {
       return sendJson(res, 503, { error: "Firebase web config is not configured." });
     }
-    return sendJson(res, 200, { firebase: FIREBASE_WEB_CONFIG });
+    return sendJson(res, 200, {
+      firebase: FIREBASE_WEB_CONFIG,
+      adminEmails: Array.from(ALLOWED_ADMIN_EMAILS)
+    });
   }
 
   if (pathname === "/api/health" && req.method === "GET") {
