@@ -15,7 +15,11 @@ try {
       const equalIndex = trimmed.indexOf("=");
       if (equalIndex !== -1) {
         const key = trimmed.substring(0, equalIndex).trim();
-        const value = trimmed.substring(equalIndex + 1).trim();
+        let value = trimmed.substring(equalIndex + 1).trim();
+        // Strip surrounding quotes
+        if ((value.startsWith('"') && value.endsWith('"')) || (value.startsWith("'") && value.endsWith("'"))) {
+          value = value.slice(1, -1);
+        }
         // Do not overwrite existing environment variables
         if (key && process.env[key] === undefined) {
           process.env[key] = value;
@@ -57,9 +61,23 @@ function initFirebaseAdmin() {
       console.log(`Firebase Admin initialized using credential file: ${path.basename(serviceAccountPath)}`);
       seedFirestoreIfNeeded();
     } else {
-      const projectId = process.env.FIREBASE_PROJECT_ID;
-      const clientEmail = process.env.FIREBASE_CLIENT_EMAIL;
-      const privateKey = process.env.FIREBASE_PRIVATE_KEY;
+      let projectId = process.env.FIREBASE_PROJECT_ID;
+      let clientEmail = process.env.FIREBASE_CLIENT_EMAIL;
+      let privateKey = process.env.FIREBASE_PRIVATE_KEY;
+
+      // Helper to strip surrounding quotes
+      const stripQuotes = (str) => {
+        if (!str) return str;
+        str = str.trim();
+        if ((str.startsWith('"') && str.endsWith('"')) || (str.startsWith("'") && str.endsWith("'"))) {
+          return str.slice(1, -1);
+        }
+        return str;
+      };
+
+      projectId = stripQuotes(projectId);
+      clientEmail = stripQuotes(clientEmail);
+      privateKey = stripQuotes(privateKey);
 
       if (projectId && clientEmail && privateKey) {
         // Correct escaping of newlines in private key
@@ -132,7 +150,7 @@ const seedTributes = [
     id: "seed-kwame",
     name: "Kwame Boateng",
     relationship: "Family friend",
-    message: "Agya Ekow Mensah had a way of making people feel seen. His kindness remains a blessing to all of us. I count myself lucky to have known him.",
+    message: "Mr. Joseph Ekow Mensah had a way of making people feel seen. His kindness remains a blessing to all of us. I count myself lucky to have known him.",
     date: "May 2026",
     createdAt: "2026-05-02T00:00:00.000Z"
   },
@@ -205,6 +223,7 @@ function firestoreCollectionForType(type) {
   if (type === "tribute") return "tributes";
   if (type === "video") return "videoTributes";
   if (type === "photo") return "photos";
+  if (type === "condolence") return "condolences";
   return null;
 }
 
@@ -222,13 +241,14 @@ async function fetchSubmissions(status) {
     }));
   };
 
-  const [tributes, videos, photos] = await Promise.all([
+  const [tributes, videos, photos, condolences] = await Promise.all([
     queryCollection("tributes", "tribute"),
     queryCollection("videoTributes", "video"),
-    queryCollection("photos", "photo")
+    queryCollection("photos", "photo"),
+    queryCollection("condolences", "condolence")
   ]);
 
-  return [...tributes, ...videos, ...photos].sort((a, b) => 
+  return [...tributes, ...videos, ...photos, ...condolences].sort((a, b) => 
     String(b.createdAt || "").localeCompare(String(a.createdAt || ""))
   );
 }
@@ -529,6 +549,7 @@ function isApiPath(pathname) {
     pathname === "/api/tributes" ||
     pathname === "/api/video-tributes" ||
     pathname === "/api/photos" ||
+    pathname === "/api/condolences" ||
     pathname === "/api/admin/submissions" ||
     pathname === "/api/admin/review" ||
     pathname === "/api/candles";
@@ -588,10 +609,11 @@ async function handleApi(req, res, pathname) {
         return { approved, pending };
       };
 
-      const [tributesCount, videosCount, photosCount, candleDoc] = await Promise.all([
+      const [tributesCount, videosCount, photosCount, condolencesCount, candleDoc] = await Promise.all([
         getCounts("tributes"),
         getCounts("videoTributes"),
         getCounts("photos"),
+        getCounts("condolences"),
         db.doc("meta/candles").get()
       ]);
 
@@ -610,6 +632,8 @@ async function handleApi(req, res, pathname) {
         pendingVideoTributes: videosCount.pending,
         photos: photosCount.approved,
         pendingPhotos: photosCount.pending,
+        condolences: condolencesCount.approved,
+        pendingCondolences: condolencesCount.pending,
         candles: candlesCount,
         debug: {
           __dirname,
@@ -675,6 +699,55 @@ async function handleApi(req, res, pathname) {
     } catch (error) {
       console.error("Create tribute error:", error);
       return sendJson(res, 500, { error: "Failed to submit tribute." });
+    }
+  }
+
+  if (pathname === "/api/condolences" && req.method === "GET") {
+    try {
+      const snapshot = await db.collection("condolences").get();
+      const condolences = snapshot.docs
+        .map(doc => ({ id: doc.id, ...doc.data() }))
+        .filter(item => item.status === "approved")
+        .sort((a, b) => String(b.createdAt || "").localeCompare(String(a.createdAt || "")))
+        .slice(0, 500);
+      return sendJson(res, 200, { condolences });
+    } catch (error) {
+      console.error("Fetch condolences error:", error);
+      return sendJson(res, 500, { error: "Failed to fetch condolences." });
+    }
+  }
+
+  if (pathname === "/api/condolences" && req.method === "POST") {
+    let payload;
+    try {
+      payload = JSON.parse(await readBody(req));
+    } catch (error) {
+      return sendJson(res, error.statusCode || 400, { error: "Invalid condolence payload." });
+    }
+
+    const name = cleanText(payload.name, 80);
+    const location = cleanText(payload.location, 100);
+    const message = cleanText(payload.message, 1000);
+
+    if (!name || !message) {
+      return sendJson(res, 422, { error: "Name and message are required." });
+    }
+
+    const condolence = {
+      name,
+      location: location || "",
+      message,
+      status: "pending",
+      date: new Intl.DateTimeFormat("en", { month: "short", year: "numeric" }).format(new Date()),
+      createdAt: new Date().toISOString()
+    };
+
+    try {
+      const docRef = await db.collection("condolences").add(condolence);
+      return sendJson(res, 201, { condolence: { id: docRef.id, ...condolence }, pending: true });
+    } catch (error) {
+      console.error("Create condolence error:", error);
+      return sendJson(res, 500, { error: "Failed to submit condolence." });
     }
   }
 

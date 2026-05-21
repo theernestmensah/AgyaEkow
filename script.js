@@ -278,7 +278,7 @@ function renderGallery() {
   if (!galleryGrid) return;
   const approvedPhotos = state.photos.map(photo => `
     <figure class="gallery-item">
-      <img src="${escapeHtml(photo.imageUrl)}" alt="${escapeHtml(photo.caption || "Memory photo of Agya Ekow Mensah")}">
+      <img src="${escapeHtml(photo.imageUrl)}" alt="${escapeHtml(photo.caption || "Memory photo of Mr. Joseph Ekow Mensah")}">
       <figcaption class="gallery-caption">
         ${photo.caption ? `<strong>${escapeHtml(photo.caption)}</strong>` : ""}
         ${photo.name ? `<span>${escapeHtml(photo.name)}</span>` : ""}
@@ -312,6 +312,21 @@ async function loadPhotos() {
   } catch (_) {
     renderGallery();
   }
+}
+
+async function loadCandles() {
+  state.candles = readLocalCandles();
+  updateCandleCount(state.candles);
+
+  if (!backendAvailable()) return;
+
+  try {
+    const payload = await apiFetch("/api/candles");
+    if (payload && payload.count !== undefined) {
+      updateCandleCount(payload.count);
+      saveLocalCandles(payload.count);
+    }
+  } catch (_) {}
 }
 
 function sparkCandle() {
@@ -648,10 +663,9 @@ initCanvas();
 animateCanvas();
 
 state.photos = readLocalPhotos();
-state.candles = readLocalCandles();
 loadTributes();
 loadPhotos();
 loadVideoTributes();
-updateCandleCount(state.candles);
+loadCandles();
 setLiveStatus(false);
 if (isCandleLit()) applyLitState(true);
