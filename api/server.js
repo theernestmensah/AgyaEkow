@@ -536,23 +536,29 @@ async function serveR2Media(req, res, pathname) {
     return;
   }
 
-  const response = await getR2Object(objectKey);
-  if (!response.ok || !response.body) {
-    sendText(res, response.status === 404 ? 404 : 502, "Media not found.");
-    return;
+  try {
+    const response = await getR2Object(objectKey);
+    if (!response.ok) {
+      sendText(res, response.status === 404 ? 404 : 502, "Media not found.");
+      return;
+    }
+
+    const ext = path.extname(objectKey).toLowerCase();
+    const contentType = response.headers.get("content-type") || mimeTypes[ext] || "application/octet-stream";
+
+    const arrayBuffer = await response.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+
+    res.writeHead(200, {
+      "Content-Type": contentType,
+      "Content-Length": buffer.length,
+      "Cache-Control": "public, max-age=3600"
+    });
+    res.end(buffer);
+  } catch (error) {
+    console.error("Error serving R2 media:", error);
+    sendText(res, 500, "Media unavailable.");
   }
-
-  const ext = path.extname(objectKey).toLowerCase();
-  const contentType = response.headers.get("content-type") || mimeTypes[ext] || "application/octet-stream";
-  const contentLength = response.headers.get("content-length");
-  res.writeHead(200, {
-    "Content-Type": contentType,
-    ...(contentLength ? { "Content-Length": contentLength } : {}),
-    "Cache-Control": "public, max-age=3600"
-  });
-
-  const { Readable } = require("stream");
-  Readable.fromWeb(response.body).pipe(res);
 }
 
 async function handleApi(req, res, pathname) {

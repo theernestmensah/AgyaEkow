@@ -879,10 +879,14 @@
 
     function mediaHtml(item) {
       if (item.type === "photo") {
-        return `<div class="review-media"><img src="${escapeHtml(item.imageUrl)}" alt=""></div>`;
+        const fallbackUrl = item.objectKey ? `/media/${escapeHtml(item.objectKey)}` : '';
+        const onerrorAttr = fallbackUrl ? `onerror="this.onerror=null; this.src='${fallbackUrl}';"` : '';
+        return `<div class="review-media"><img src="${escapeHtml(item.imageUrl)}" ${onerrorAttr} alt=""></div>`;
       }
       if (item.type === "video") {
-        return `<div class="review-media"><video src="${escapeHtml(item.videoUrl)}" controls preload="metadata"></video></div>`;
+        const fallbackUrl = item.objectKey ? `/media/${escapeHtml(item.objectKey)}` : '';
+        const onerrorAttr = fallbackUrl ? `onerror="this.onerror=null; this.src='${fallbackUrl}';"` : '';
+        return `<div class="review-media"><video src="${escapeHtml(item.videoUrl)}" ${onerrorAttr} controls preload="none"></video></div>`;
       }
       return "";
     }
@@ -919,57 +923,61 @@
 
       reviewEmpty.hidden = true;
       reviewStatus.textContent = `${items.length} ${currentTab} item${items.length === 1 ? "" : "s"}.`;
-      reviewGrid.innerHTML = items.map(item => {
-        let actionButtons = "";
-        if (currentTab === "pending") {
-          actionButtons = `
-            <button class="btn btn-approve" data-action="approved" data-type="${escapeHtml(item.type)}" data-id="${escapeHtml(item.id)}">
-              <svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-              <span>Approve</span>
-            </button>
-            <button class="btn btn-reject" data-action="rejected" data-type="${escapeHtml(item.type)}" data-id="${escapeHtml(item.id)}">
-              <svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
-              <span>Reject</span>
-            </button>
-          `;
-        } else if (currentTab === "approved") {
-          actionButtons = `
-            <button class="btn btn-reject" data-action="rejected" data-type="${escapeHtml(item.type)}" data-id="${escapeHtml(item.id)}">
-              <svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
-              <span>Reject & Hide</span>
-            </button>
-          `;
-        } else if (currentTab === "rejected") {
-          actionButtons = `
-            <button class="btn btn-approve" data-action="approved" data-type="${escapeHtml(item.type)}" data-id="${escapeHtml(item.id)}">
-              <svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-              <span>Approve & Restore</span>
-            </button>
-          `;
-        }
 
-        return `
-          <article class="review-card">
-            <div class="card-body">
-              <div class="review-meta">
-                ${typeBadgeIcon(item.type)} 
-                <span>${escapeHtml(item.type)}</span>
-                <span class="meta-separator">&middot;</span>
-                <span>${escapeHtml(item.date || "Just now")}</span>
+      // Yield to the browser main thread before doing heavy DOM updates
+      setTimeout(() => {
+        reviewGrid.innerHTML = items.map(item => {
+          let actionButtons = "";
+          if (currentTab === "pending") {
+            actionButtons = `
+              <button class="btn btn-approve" data-action="approved" data-type="${escapeHtml(item.type)}" data-id="${escapeHtml(item.id)}">
+                <svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                <span>Approve</span>
+              </button>
+              <button class="btn btn-reject" data-action="rejected" data-type="${escapeHtml(item.type)}" data-id="${escapeHtml(item.id)}">
+                <svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+                <span>Reject</span>
+              </button>
+            `;
+          } else if (currentTab === "approved") {
+            actionButtons = `
+              <button class="btn btn-reject" data-action="rejected" data-type="${escapeHtml(item.type)}" data-id="${escapeHtml(item.id)}">
+                <svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+                <span>Reject & Hide</span>
+              </button>
+            `;
+          } else if (currentTab === "rejected") {
+            actionButtons = `
+              <button class="btn btn-approve" data-action="approved" data-type="${escapeHtml(item.type)}" data-id="${escapeHtml(item.id)}">
+                <svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                <span>Approve & Restore</span>
+              </button>
+            `;
+          }
+
+          return `
+            <article class="review-card">
+              <div class="card-body">
+                <div class="review-meta">
+                  ${typeBadgeIcon(item.type)} 
+                  <span>${escapeHtml(item.type)}</span>
+                  <span class="meta-separator">&middot;</span>
+                  <span>${escapeHtml(item.date || "Just now")}</span>
+                </div>
+                <h2>${escapeHtml(item.name || "Anonymous Submitter")}</h2>
+                ${item.relationship ? `<div class="submitter-relation">Relationship: ${escapeHtml(item.relationship)}</div>` : ""}
+                ${item.location ? `<div class="submitter-relation">Location: ${escapeHtml(item.location)}</div>` : ""}
+                ${item.message ? `<div class="review-message">"${escapeHtml(item.message)}"</div>` : ""}
+                ${item.caption ? `<div class="review-message">Caption: "${escapeHtml(item.caption)}"</div>` : ""}
+                ${mediaHtml(item)}
               </div>
-              <h2>${escapeHtml(item.name || "Anonymous Submitter")}</h2>
-              ${item.relationship ? `<div class="submitter-relation">Relationship: ${escapeHtml(item.relationship)}</div>` : ""}
-              ${item.location ? `<div class="submitter-relation">Location: ${escapeHtml(item.location)}</div>` : ""}
-              ${item.message ? `<div class="review-message">"${escapeHtml(item.message)}"</div>` : ""}
-              ${item.caption ? `<div class="review-message">Caption: "${escapeHtml(item.caption)}"</div>` : ""}
-              ${mediaHtml(item)}
-            </div>
-            <div class="review-actions">
-              ${actionButtons}
-            </div>
-          </article>
-        `;
-      }).join("");
+              <div class="review-actions">
+                ${actionButtons}
+              </div>
+            </article>
+          `;
+        }).join("");
+      }, 0);
     }
 
     async function loadQueue() {

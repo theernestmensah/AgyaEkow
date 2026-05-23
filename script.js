@@ -203,16 +203,20 @@ function renderVideoTributes() {
     return;
   }
 
-  videoTributeWall.innerHTML = state.videoTributes.map(video => `
-    <article class="video-card">
-      <video controls preload="metadata" src="${escapeHtml(video.videoUrl)}"></video>
-      <div class="video-card-body">
-        <strong>${escapeHtml(video.name)}</strong>
-        <span>${escapeHtml(video.relationship || "Loved one")} · ${escapeHtml(video.date || "")}</span>
-        ${video.message ? `<p>${escapeHtml(video.message)}</p>` : ""}
-      </div>
-    </article>
-  `).join("");
+  videoTributeWall.innerHTML = state.videoTributes.map(video => {
+    const fallbackUrl = video.objectKey ? `/media/${escapeHtml(video.objectKey)}` : '';
+    const onerrorAttr = fallbackUrl ? `onerror="this.onerror=null; this.src='${fallbackUrl}';"` : '';
+    return `
+      <article class="video-card">
+        <video controls preload="none" src="${escapeHtml(video.videoUrl)}" ${onerrorAttr}></video>
+        <div class="video-card-body">
+          <strong>${escapeHtml(video.name)}</strong>
+          <span>${escapeHtml(video.relationship || "Loved one")} · ${escapeHtml(video.date || "")}</span>
+          ${video.message ? `<p>${escapeHtml(video.message)}</p>` : ""}
+        </div>
+      </article>
+    `;
+  }).join("");
 }
 
 function fileToDataUrl(file) {
@@ -265,15 +269,19 @@ function applyLitState(lit) {
 
 function renderGallery() {
   if (!galleryGrid) return;
-  const approvedPhotos = state.photos.map(photo => `
-    <figure class="gallery-item">
-      <img src="${escapeHtml(photo.imageUrl)}" alt="${escapeHtml(photo.caption || "Memory photo of Mr. Joseph Ekow Mensah")}">
-      <figcaption class="gallery-caption">
-        ${photo.caption ? `<strong>${escapeHtml(photo.caption)}</strong>` : ""}
-        ${photo.name ? `<span>${escapeHtml(photo.name)}</span>` : ""}
-      </figcaption>
-    </figure>
-  `);
+  const approvedPhotos = state.photos.map(photo => {
+    const fallbackUrl = photo.objectKey ? `/media/${escapeHtml(photo.objectKey)}` : '';
+    const onerrorAttr = fallbackUrl ? `onerror="this.onerror=null; this.src='${fallbackUrl}';"` : '';
+    return `
+      <figure class="gallery-item">
+        <img src="${escapeHtml(photo.imageUrl)}" ${onerrorAttr} alt="${escapeHtml(photo.caption || "Memory photo of Mr. Joseph Ekow Mensah")}">
+        <figcaption class="gallery-caption">
+          ${photo.caption ? `<strong>${escapeHtml(photo.caption)}</strong>` : ""}
+          ${photo.name ? `<span>${escapeHtml(photo.name)}</span>` : ""}
+        </figcaption>
+      </figure>
+    `;
+  });
 
   const placeholders = galleryData.map((g, i) => `
     <figure class="gallery-item">
