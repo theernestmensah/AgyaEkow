@@ -282,10 +282,13 @@ function readBody(req, maxBytes = 1024 * 64) {
 }
 
 function cleanText(value, maxLength) {
-  return String(value || "")
+  const str = String(value || "")
     .replace(/\s+/g, " ")
-    .trim()
-    .slice(0, maxLength);
+    .trim();
+  if (maxLength !== undefined) {
+    return str.slice(0, maxLength);
+  }
+  return str;
 }
 
 function r2Enabled() {
@@ -656,7 +659,7 @@ async function handleApi(req, res, pathname) {
 
     const name = cleanText(payload.name, 80);
     const relationship = cleanText(payload.relationship, 80);
-    const message = cleanText(payload.message, 900);
+    const message = cleanText(payload.message);
 
     if (!name || !message) {
       return sendJson(res, 422, { error: "Name and tribute are required." });
@@ -705,7 +708,7 @@ async function handleApi(req, res, pathname) {
 
     const name = cleanText(payload.name, 80);
     const location = cleanText(payload.location, 100);
-    const message = cleanText(payload.message, 1000);
+    const message = cleanText(payload.message);
 
     if (!name || !message) {
       return sendJson(res, 422, { error: "Name and message are required." });
@@ -754,7 +757,7 @@ async function handleApi(req, res, pathname) {
 
     const name = cleanText(payload.name, 80);
     const relationship = cleanText(payload.relationship, 80);
-    const message = cleanText(payload.message, 400);
+    const message = cleanText(payload.message);
     const parsedVideo = parseBase64Video(payload.videoData);
 
     if (!name || !parsedVideo) {
