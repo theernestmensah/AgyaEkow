@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Funeral brochure for Mr. Joseph Ekow Mensah.">
+  <title>Funeral Brochure &middot; Mr. Joseph Ekow Mensah</title>
+  <link rel="canonical" href="https://www.josephekowmensah.com/brochure">
+  <link rel="apple-touch-icon" href="grandpa.jpeg">
+  <link rel="icon" type="image/jpeg" href="grandpa.jpeg">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.josephekowmensah.com/brochure">
+  <meta property="og:title" content="Funeral Brochure &middot; Mr. Joseph Ekow Mensah">
+  <meta property="og:description" content="View the funeral brochure and order of service for Mr. Joseph Ekow Mensah.">
+  <meta property="og:image" content="https://www.josephekowmensah.com/grandpa.jpeg">
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://www.josephekowmensah.com/brochure">
+  <meta property="twitter:title" content="Funeral Brochure &middot; Mr. Joseph Ekow Mensah">
+  <meta property="twitter:description" content="View the funeral brochure and order of service for Mr. Joseph Ekow Mensah.">
+  <meta property="twitter:image" content="https://www.josephekowmensah.com/grandpa.jpeg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=brochure-1">
+</head>
+<body class="brochure-page">
+  <main class="brochure-page-main">
+    <section
+      class="section brochure-section brochure-section-standalone"
+      id="brochureOnly"
+      data-release-date="2026-06-27"
+      data-release-time-zone="Africa/Accra"
+      data-brochure-url="brochures/funeral-brochure.pdf"
+    >
+      <div class="section-container">
+        <div class="section-header brochure-page-header">
+          <p class="section-eyebrow">Funeral brochure</p>
+          <h1 class="section-title">Order of Service</h1>
+          <p class="section-lead">Mr. Joseph Ekow Mensah</p>
+        </div>
+
+        <div class="brochure-lock" id="brochureLock">
+          <span class="tile-label">Available soon</span>
+          <h2>Funeral Brochure</h2>
+          <p>The brochure will be available here on Saturday, June 27, 2026.</p>
+        </div>
+
+        <div class="brochure-layout brochure-only-layout" id="brochureViewer" hidden>
+          <div class="brochure-copy">
+            <span class="tile-label">Digital booklet</span>
+            <h2>Funeral Brochure</h2>
+            <p>View the booklet directly on this page, or open a copy for printing and offline reading.</p>
+            <div class="brochure-actions">
+              <a class="btn btn-primary" id="brochureOpenLink" href="brochures/funeral-brochure.pdf" target="_blank" rel="noopener">
+                <svg class="btn-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/><path d="M9 15h6"/><path d="M9 18h4"/></svg>
+                <span>Open PDF</span>
+              </a>
+              <a class="btn btn-glass" id="brochureDownloadLink" href="brochures/funeral-brochure.pdf" download>
+                <svg class="btn-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>
+                <span>Download PDF</span>
+              </a>
+            </div>
+          </div>
+
+          <div class="brochure-frame" aria-label="Funeral brochure PDF preview">
+            <object id="brochureObject" type="application/pdf">
+              <div class="brochure-fallback">
+                <p>Your browser cannot display the PDF preview.</p>
+                <a id="brochureFallbackLink" href="brochures/funeral-brochure.pdf" target="_blank" rel="noopener">Open the brochure</a>
+              </div>
+            </object>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const brochureOnlySection = document.getElementById("brochureOnly");
+    const brochureLock = document.getElementById("brochureLock");
+    const brochureViewer = document.getElementById("brochureViewer");
+    const brochureObject = document.getElementById("brochureObject");
+    const brochureOpenLink = document.getElementById("brochureOpenLink");
+    const brochureDownloadLink = document.getElementById("brochureDownloadLink");
+    const brochureFallbackLink = document.getElementById("brochureFallbackLink");
+
+    function getDateInTimeZone(timeZone) {
+      const parts = new Intl.DateTimeFormat("en-CA", {
+        timeZone,
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit"
+      }).formatToParts(new Date());
+      const values = Object.fromEntries(parts.map(part => [part.type, part.value]));
+      return `${values.year}-${values.month}-${values.day}`;
+    }
+
+    function initBrochurePage() {
+      const pdfUrl = brochureOnlySection.dataset.brochureUrl || "brochures/funeral-brochure.pdf";
+      const releaseDate = brochureOnlySection.dataset.releaseDate || "2026-06-27";
+      const timeZone = brochureOnlySection.dataset.releaseTimeZone || "Africa/Accra";
+      let today = "";
+
+      try {
+        today = getDateInTimeZone(timeZone);
+      } catch (_) {
+        today = new Date().toISOString().slice(0, 10);
+      }
+
+      const isReleased = today >= releaseDate;
+      brochureLock.hidden = isReleased;
+      brochureViewer.hidden = !isReleased;
+
+      brochureOpenLink.href = pdfUrl;
+      brochureDownloadLink.href = pdfUrl;
+      brochureFallbackLink.href = pdfUrl;
+      if (isReleased) brochureObject.data = `${pdfUrl}#view=FitH`;
+    }
+
+    initBrochurePage();
+  </script>
+</body>
+</html>

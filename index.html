@@ -52,7 +52,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=tribute-card-1">
+  <link rel="stylesheet" href="styles.css?v=brochure-1">
 </head>
 <body>
 
@@ -95,6 +95,8 @@
       </li>
       <li><a href="index.html#gallery">Gallery</a></li>
       <li><a href="index.html#service">Service</a></li>
+      <li><a href="live.html">Live</a></li>
+      <li id="brochureNavItem" hidden><a href="index.html#brochure">Brochure</a></li>
       <li><a href="#candle" class="nav-cta">Light a Candle</a></li>
     </ul>
   </div>
@@ -363,6 +365,10 @@
         <svg class="btn-icon" style="width:16px; height:16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
         <span>Get Directions</span>
       </a>
+      <a class="btn btn-glass" href="live.html">
+        <svg class="btn-icon" style="width:16px; height:16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 12.5v-1c0-3.9.4-5.8 1.5-6.8C5.2 3.7 7.6 3.5 12 3.5s6.8.2 8 1.2c1.1 1 1.5 2.9 1.5 6.8v1c0 3.9-.4 5.8-1.5 6.8-1.2 1-3.6 1.2-8 1.2s-6.8-.2-8-1.2c-1.1-1-1.5-2.9-1.5-6.8Z"/><path d="m10 8 6 4-6 4Z"/></svg>
+        <span>Watch Live</span>
+      </a>
       
       <div class="dropdown-wrapper" style="position: relative; display: inline-block;">
         <button class="btn btn-glass" id="calendarDropdownBtn" type="button">
@@ -432,6 +438,51 @@
         }
       });
     </script>
+  </div>
+</section>
+
+<!-- ==================== BROCHURE ==================== -->
+<section
+  class="section brochure-section"
+  id="brochure"
+  data-release-date="2026-06-27"
+  data-release-time-zone="Africa/Accra"
+  data-brochure-url="brochures/funeral-brochure.pdf"
+  hidden
+>
+  <div class="section-container">
+    <div class="section-header reveal">
+      <p class="section-eyebrow">Funeral brochure</p>
+      <h2 class="section-title">Order of Service</h2>
+      <p class="section-lead">Read the funeral brochure for the service honoring Mr. Joseph Ekow Mensah.</p>
+    </div>
+
+    <div class="brochure-layout reveal delay-1">
+      <div class="brochure-copy">
+        <span class="tile-label">Digital booklet</span>
+        <h3>Funeral Brochure</h3>
+        <p>View the booklet directly on this page, or open a copy for printing and offline reading.</p>
+        <div class="brochure-actions">
+          <a class="btn btn-primary" href="brochures/funeral-brochure.pdf" target="_blank" rel="noopener">
+            <svg class="btn-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/><path d="M9 15h6"/><path d="M9 18h4"/></svg>
+            <span>Open PDF</span>
+          </a>
+          <a class="btn btn-glass" href="brochures/funeral-brochure.pdf" download>
+            <svg class="btn-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>
+            <span>Download PDF</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="brochure-frame" aria-label="Funeral brochure PDF preview">
+        <object data="brochures/funeral-brochure.pdf#view=FitH" type="application/pdf">
+          <div class="brochure-fallback">
+            <p>Your browser cannot display the PDF preview.</p>
+            <a href="brochures/funeral-brochure.pdf" target="_blank" rel="noopener">Open the brochure</a>
+          </div>
+        </object>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -511,6 +562,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
-<script type="module" src="script.js?v=video-tributes-1"></script>
+<script type="module" src="script.js?v=brochure-1"></script>
 </body>
 </html>

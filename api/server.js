@@ -233,6 +233,7 @@ const mimeTypes = {
   ".webp": "image/webp",
   ".svg": "image/svg+xml; charset=utf-8",
   ".ico": "image/x-icon",
+  ".pdf": "application/pdf",
   ".mp4": "video/mp4",
   ".webm": "video/webm",
   ".mov": "video/quicktime",
@@ -965,23 +966,42 @@ function serveStatic(req, res, pathname) {
     return;
   }
 
-  fs.stat(filePath, (statError, stats) => {
-    if (statError || !stats.isFile()) {
-      res.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" });
-      res.end("Not found");
-      return;
-    }
-
-    const ext = path.extname(filePath).toLowerCase();
+  const sendFile = (targetPath) => {
+    const ext = path.extname(targetPath).toLowerCase();
     const headers = {
       "Content-Type": mimeTypes[ext] || "application/octet-stream",
       "Cache-Control": ext === ".html" ? "no-store" : "public, max-age=3600"
     };
-    if (path.basename(filePath) === "admin.html") {
+    if (path.basename(targetPath) === "admin.html") {
       headers["X-Robots-Tag"] = "noindex, nofollow, noarchive";
     }
     res.writeHead(200, headers);
-    fs.createReadStream(filePath).pipe(res);
+    fs.createReadStream(targetPath).pipe(res);
+  };
+
+  const sendNotFound = () => {
+    res.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" });
+    res.end("Not found");
+  };
+
+  fs.stat(filePath, (statError, stats) => {
+    if (statError || !stats.isFile()) {
+      if (!path.extname(filePath)) {
+        const htmlPath = `${filePath}.html`;
+        fs.stat(htmlPath, (htmlError, htmlStats) => {
+          if (htmlError || !htmlStats.isFile()) {
+            sendNotFound();
+            return;
+          }
+          sendFile(htmlPath);
+        });
+        return;
+      }
+      sendNotFound();
+      return;
+    }
+
+    sendFile(filePath);
   });
 }
 

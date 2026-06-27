@@ -39,6 +39,8 @@ const cursorDot = document.getElementById("cursorDot");
 const cursorRing = document.getElementById("cursorRing");
 const bgCanvas = document.getElementById("bgCanvas");
 const liveStatus = document.getElementById("liveStatus");
+const brochureSection = document.getElementById("brochure");
+const brochureNavItem = document.getElementById("brochureNavItem");
 
 function setLiveStatus(online) {
   state.firebaseOnline = online;
@@ -556,6 +558,36 @@ if (dropdownToggle && dropdownWrapper) {
     }
   });
 }
+
+function getDateInTimeZone(timeZone) {
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    timeZone,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit"
+  }).formatToParts(new Date());
+  const values = Object.fromEntries(parts.map(part => [part.type, part.value]));
+  return `${values.year}-${values.month}-${values.day}`;
+}
+
+function initBrochureGate() {
+  if (!brochureSection) return;
+  const releaseDate = brochureSection.dataset.releaseDate || "2026-06-27";
+  const timeZone = brochureSection.dataset.releaseTimeZone || "Africa/Accra";
+  let today = "";
+
+  try {
+    today = getDateInTimeZone(timeZone);
+  } catch (_) {
+    today = new Date().toISOString().slice(0, 10);
+  }
+
+  const isReleased = today >= releaseDate;
+  brochureSection.hidden = !isReleased;
+  if (brochureNavItem) brochureNavItem.hidden = !isReleased;
+}
+
+initBrochureGate();
 
 const nav = document.querySelector(".site-nav");
 window.addEventListener("scroll", () => {
